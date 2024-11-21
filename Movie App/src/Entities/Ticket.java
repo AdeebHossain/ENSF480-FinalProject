@@ -5,6 +5,8 @@
  * Lecture Section: L01 
  */
 
+ package Entities;
+ 
  public class Ticket{
     private int ticket_number;
     private Movie movie;
