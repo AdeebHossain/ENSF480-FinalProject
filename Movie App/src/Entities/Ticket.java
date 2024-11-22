@@ -10,7 +10,7 @@
  public class Ticket{
     private int ticket_number;
     private Movie movie;
-    private Theatre theatre;
+    // private Theatre theatre;
     private Seat show_seat;
     private Showtime showtime;
     private Receipt receipt;
@@ -18,17 +18,17 @@
     private static int ticketID = 1000;
     
     // Constrctor where partial ticket object is created, however no details regarding payment and reciept are available yet
-    public Ticket(Movie movie, Theatre theatre, Seat show_seat, Showtime showtime){
+    public Ticket(Movie movie, Seat show_seat, Showtime showtime){
         this.ticket_number = ticketID;
         this.movie = movie;
-        this.theatre = theatre;
+        // this.theatre = theatre;
         this.show_seat = show_seat;
         this.showtime = showtime;
         this.receipt =  null;
     }
 
     // Constructor where ticket object is created, includidng all payment and reciept details
-    public Ticket(int ticket_number, Movie movie, Theatre theatre, Seat show_seat, Showtime showtime, Receipt receipt) {
+    public Ticket(int ticket_number, Movie movie, Seat show_seat, Showtime showtime, Receipt receipt) {
         this.ticket_number = ticket_number;
 
         // Ensure ticketID stays ahead of the given ticket_number to avoid duplicates
@@ -37,7 +37,7 @@
         }
 
         this.movie = movie;
-        this.theatre = theatre;
+        // this.theatre = theatre;
         this.show_seat = show_seat;
         this.showtime = showtime;
         this.receipt = receipt; 
@@ -52,9 +52,9 @@
         return movie;
     }
 
-    public Theatre getTheatre() {
-        return theatre;
-    }
+    // public Theatre getTheatre() {
+    //     return theatre;
+    // }
 
     public Seat getShow_seat() {
         return show_seat;
@@ -77,9 +77,9 @@
         this.movie = movie;
     }
 
-    public void setTheatre(Theatre theatre) {
-        this.theatre = theatre;
-    }
+    // public void setTheatre(Theatre theatre) {
+    //     this.theatre = theatre;
+    // }
 
     public void setShow_seat(Seat show_seat) {
         this.show_seat = show_seat;
