@@ -13,18 +13,16 @@ public class Movie {
     private String movie_genre;
     private String movie_summary;
     private double movie_price;
-    private Announcement announcement;
 
     private static int movieID = 1000;
 
-    // Constructor for creating a new movie (upcoming no news/announcements about it yet (eg, "coming to a theatre near you soon"))
+    // Constructor for creating a new movie 
     public Movie(String movie_title, String movie_genre, String movie_summary, double movie_price) {
         this.movie_ID = movieID++; 
         this.movie_title = movie_title;
         this.movie_genre = movie_genre;
         this.movie_summary = movie_summary;
         this.movie_price = movie_price;
-        this.announcement = null; 
     }
 
     // Constructor for creating a movie with a specified ID (for example to load from a database)
@@ -40,7 +38,6 @@ public class Movie {
         this.movie_genre = movie_genre;
         this.movie_summary = movie_summary;
         this.movie_price = movie_price;
-        this.announcement = null;
     }
 
     // Getters
@@ -64,10 +61,6 @@ public class Movie {
         return movie_price;
     }
 
-    public Announcement getAnnouncement() {
-        return announcement;
-    }
-
     // Setters
     public void setMovie_ID(int movie_ID) {
         this.movie_ID = movie_ID;
@@ -87,10 +80,6 @@ public class Movie {
 
     public void setMovie_price(double movie_price) {
         this.movie_price = movie_price;
-    }
-
-    public void setAnnouncement(Announcement announcement) {
-        this.announcement = announcement;
     }
 
     // Override toString to provide a description of the movie
