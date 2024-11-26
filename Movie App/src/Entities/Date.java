@@ -1,5 +1,7 @@
 package Entities;
 
+import java.time.LocalDate;
+
 public class Date {
     private int day;
     private int month;
@@ -38,9 +40,15 @@ public class Date {
         this.year = year;
     }
 
-    // ToString override to display the date
     @Override
     public String toString() {
         return String.format("%02d/%02d/%04d", day, month, year);
+    }
+
+    // Method to check if this date is before the current date
+    public boolean isBeforeCurrentDate() {
+        LocalDate todaysDate = LocalDate.now();
+        LocalDate thisDate = LocalDate.of(year, month, day);
+        return thisDate.isBefore(todaysDate);
     }
 }
