@@ -65,7 +65,7 @@ public class Login implements Serializable {
         this.currentOrdinaryUser = currentOrdinaryUser;
     }
 
-    public ControlDB getDataController() {
+    public DATABASE getDataController() {
         return dataController;
     }
 
