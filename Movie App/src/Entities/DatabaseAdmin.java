@@ -2,22 +2,22 @@ package Entities;
 
 public class DatabaseAdmin extends RegisteredUser {
     // Attributes specific to DatabaseAdmin
-    private String adminLevel;
+    private int adminID;
 
     // Constructor
-    public DatabaseAdmin(String name, String username, String password, String email, String address, String cardNumber, String adminLevel) {
-        super(name, username, password, email, address, cardNumber);
-        this.adminLevel = adminLevel;
+    public DatabaseAdmin(Name name, String username, String password, String email, String address, BankCardInfo paymentInfo, int adminID) {
+        super(name, username, password, email, address, paymentInfo);
+        this.adminID = adminID;
     }
 
-    // Getter for adminLevel
-    public String getAdminLevel() {
-        return adminLevel;
+    // Getter for adminID
+    public int getadminID() {
+        return adminID;
     }
 
-    // Setter for adminLevel
-    public void setAdminLevel(String adminLevel) {
-        this.adminLevel = adminLevel;
+    // Setter for adminID
+    public void setadminID(int adminID) {
+        this.adminID = adminID;
     }
 
     @Override
@@ -26,7 +26,7 @@ public class DatabaseAdmin extends RegisteredUser {
                "name='" + getName() + '\'' +
                ", username='" + getUsername() + '\'' +
                ", email='" + getEmail() + '\'' +
-               ", adminLevel='" + adminLevel + '\'' +
+               ", adminID='" + adminID + '\'' +
                '}';
     }
 }

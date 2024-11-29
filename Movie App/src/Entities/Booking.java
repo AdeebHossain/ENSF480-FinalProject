@@ -8,16 +8,14 @@ public class Booking {
     private String bookingId;
     private User user;
     private List<Ticket> tickets; // List of tickets for this booking
-    private Payment payment;
     private boolean isCancelled; // Whether the booking was cancelled
     private Date bookingDate;
 
     // Constructor
-    public Booking(String bookingId, User user, List<Ticket> tickets, Payment payment, Date bookingDate) {
+    public Booking(String bookingId, User user, List<Ticket> tickets, Date bookingDate) {
         this.bookingId = bookingId;
         this.user = user;
         this.tickets = tickets;
-        this.payment = payment;
         this.bookingDate = bookingDate;
         this.isCancelled = false; // Initially, the booking is not cancelled
     }
@@ -47,13 +45,6 @@ public class Booking {
         this.tickets = tickets;
     }
 
-    public Payment getPayment() {
-        return payment;
-    }
-
-    public void setPayment(Payment payment) {
-        this.payment = payment;
-    }
 
     public boolean isCancelled() {
         return isCancelled;
@@ -76,9 +67,25 @@ public class Booking {
         if (!isCancelled) {
             this.isCancelled = true;
             for (Ticket ticket : tickets) {
-                ticket.getShow_seat().cancelReservation(); // Release the reserved seats
+                ticket.getseatNumber().cancelReservation(); // Release the reserved seats
             }
         }
+    }
+
+    // Method to view booking details
+    public String viewBooking() {
+        StringBuilder details = new StringBuilder();
+        details.append("Booking ID: ").append(bookingId).append("\n")
+                .append("User: ").append(user.getName()).append("\n")
+                .append("Booking Date: ").append(bookingDate).append("\n")
+                .append("Cancelled: ").append(isCancelled ? "Yes" : "No").append("\n")
+                .append("Tickets:\n");
+
+        for (Ticket ticket : tickets) {
+            details.append("  - ").append(ticket.toString()).append("\n");
+        }
+
+        return details.toString();
     }
 
     @Override
@@ -87,9 +94,9 @@ public class Booking {
                "bookingId='" + bookingId + '\'' +
                ", user=" + user +
                ", tickets=" + tickets +
-               ", payment=" + payment +
                ", isCancelled=" + isCancelled +
                ", bookingDate=" + bookingDate +
                '}';
     }
 }
+

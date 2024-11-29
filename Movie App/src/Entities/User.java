@@ -2,21 +2,21 @@ package Entities;
 
 public class User {
     // Common Attributes for all types of users
-    private String name;
+    private Name name;
     private String username;
 
     // Constructor
-    public User(String name, String username) {
+    public User(Name name, String username) {
         this.name = name;
         this.username = username;
     }
 
     // Getters and Setters
-    public String getName() {
+    public Name getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(Name name) {
         this.name = name;
     }
 

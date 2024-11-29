@@ -10,25 +10,24 @@
  public class Ticket{
     private int ticket_number;
     private Movie movie;
-    // private Theatre theatre;
-    private Seat show_seat;
+    private Seat seatNumber;
     private Showtime showtime;
     private Receipt receipt;
 
     private static int ticketID = 1000;
     
     // Constrctor where partial ticket object is created, however no details regarding payment and reciept are available yet
-    public Ticket(Movie movie, Seat show_seat, Showtime showtime){
+    public Ticket(Movie movie, Seat seatNumber, Showtime showtime){
         this.ticket_number = ticketID;
         this.movie = movie;
         // this.theatre = theatre;
-        this.show_seat = show_seat;
+        this.seatNumber = seatNumber;
         this.showtime = showtime;
         this.receipt =  null;
     }
 
     // Constructor where ticket object is created, includidng all payment and reciept details
-    public Ticket(int ticket_number, Movie movie, Seat show_seat, Showtime showtime, Receipt receipt) {
+    public Ticket(int ticket_number, Movie movie, Seat seatNumber, Showtime showtime, Receipt receipt) {
         this.ticket_number = ticket_number;
 
         // Ensure ticketID stays ahead of the given ticket_number to avoid duplicates
@@ -38,7 +37,7 @@
 
         this.movie = movie;
         // this.theatre = theatre;
-        this.show_seat = show_seat;
+        this.seatNumber = seatNumber;
         this.showtime = showtime;
         this.receipt = receipt; 
     }
@@ -56,8 +55,8 @@
     //     return theatre;
     // }
 
-    public Seat getShow_seat() {
-        return show_seat;
+    public Seat getseatNumber() {
+        return seatNumber;
     }
 
     public Showtime getShowtime() {
@@ -81,8 +80,8 @@
     //     this.theatre = theatre;
     // }
 
-    public void setShow_seat(Seat show_seat) {
-        this.show_seat = show_seat;
+    public void setSeatNumber(Seat seatNumber) {
+        this.seatNumber = seatNumber;
     }
 
     public void setShowtime(Showtime showtime) {
@@ -91,5 +90,24 @@
 
     public void setReceipt(Receipt receipt) {
         this.receipt = receipt;
+    }
+
+    public void displayTicket() {
+        System.out.println("---------- Ticket Details ----------");
+        System.out.println("Ticket Number: " + ticket_number);
+        System.out.println("Movie: " + (movie != null ? movie.getMovie_title() : "N/A"));
+        System.out.println("Seat Number: " + (seatNumber != null ? seatNumber : "N/A"));
+        System.out.println("Showtime: " + (showtime != null ? showtime.getStartTime() : "N/A"));
+        System.out.println("Date: " + (showtime != null ? showtime.getDate() : "N/A"));
+        System.out.println("Receipt: " + (receipt != null ? receipt.getReceiptID() : "Not Paid"));
+        System.out.println("------------------------------------");
+    }
+
+    // Method to cancel the ticket
+    public void cancelTicket() {
+        if (seatNumber != null) {
+            seatNumber.cancelReservation(); // Cancel the reservation for the seat
+        }
+        System.out.println("Ticket " + ticket_number + " has been canceled.");
     }
  }

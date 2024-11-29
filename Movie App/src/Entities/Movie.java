@@ -12,7 +12,6 @@ public class Movie {
     private String movie_title;
     private String movie_genre;
     private String movie_summary;
-    private double movie_price;
     private Announcement announcement;
 
     private static int movieID = 1000;
@@ -23,7 +22,6 @@ public class Movie {
         this.movie_title = movie_title;
         this.movie_genre = movie_genre;
         this.movie_summary = movie_summary;
-        this.movie_price = movie_price;
         this.announcement = null; 
     }
 
@@ -39,7 +37,6 @@ public class Movie {
         this.movie_title = movie_title;
         this.movie_genre = movie_genre;
         this.movie_summary = movie_summary;
-        this.movie_price = movie_price;
         this.announcement = null;
     }
 
@@ -58,10 +55,6 @@ public class Movie {
 
     public String getMovie_summary() {
         return movie_summary;
-    }
-
-    public double getMovie_price() {
-        return movie_price;
     }
 
     public Announcement getAnnouncement() {
@@ -85,10 +78,6 @@ public class Movie {
         this.movie_summary = movie_summary;
     }    
 
-    public void setMovie_price(double movie_price) {
-        this.movie_price = movie_price;
-    }
-
     public void setAnnouncement(Announcement announcement) {
         this.announcement = announcement;
     }
@@ -96,6 +85,6 @@ public class Movie {
     // Override toString to provide a description of the movie
     @Override
     public String toString() {
-        return String.format("Movie ID: %d\nTitle: %s\nGenre: %s\nSummary: %s\nPrice: $%.2f\n", movie_ID, movie_title, movie_genre, movie_summary, movie_price);
+        return String.format("Movie ID: %d\nTitle: %s\nGenre: %s\nSummary: %s\n", movie_ID, movie_title, movie_genre, movie_summary);
     }
 }

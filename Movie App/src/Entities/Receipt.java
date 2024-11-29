@@ -1,52 +1,88 @@
 package Entities;
 
 import java.util.Date;
-import java.util.List;
 
 public class Receipt {
     // Attributes
-    private String ticketId; // Could be a unique identifier for the booking
-    private List<Ticket> tickets; // List of tickets in this receipt
-    private Date bookingDate;
+    private int receiptID;
+    private int numTickets;
+    private float total;
+    private Date date;
+    private String user;
 
     // Constructor
-    public Receipt(String ticketId, List<Ticket> tickets, Date bookingDate) {
-        this.ticketId = ticketId;
-        this.tickets = tickets;
-        this.bookingDate = bookingDate;
+    public Receipt(int receiptID, int numTickets, float total, Date date, String user) {
+        this.receiptID = receiptID;
+        this.numTickets = numTickets;
+        this.total = total;
+        this.date = date;
+        this.user = user;
     }
 
     // Getters and Setters
-    public String getTicketId() {
-        return ticketId;
+    public int getReceiptID() {
+        return receiptID;
     }
 
-    public void setTicketId(String ticketId) {
-        this.ticketId = ticketId;
+    public void setReceiptID(int receiptID) {
+        this.receiptID = receiptID;
     }
 
-    public List<Ticket> getTickets() {
-        return tickets;
+    public int getNumTickets() {
+        return numTickets;
     }
 
-    public void setTickets(List<Ticket> tickets) {
-        this.tickets = tickets;
+    public void setNumTickets(int numTickets) {
+        this.numTickets = numTickets;
     }
 
-    public Date getBookingDate() {
-        return bookingDate;
+    public float getTotal() {
+        return total;
     }
 
-    public void setBookingDate(Date bookingDate) {
-        this.bookingDate = bookingDate;
+    public void setTotal(float total) {
+        this.total = total;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public String getUser() {
+        return user;
+    }
+
+    public void setUser(String user) {
+        this.user = user;
+    }
+
+    // Methods
+    public void generateReceipt() {
+        System.out.println("Generating receipt...");
+        System.out.println("Receipt ID: " + receiptID);
+        System.out.println("User: " + user);
+        System.out.println("Date: " + date);
+        System.out.println("Number of Tickets: " + numTickets);
+        System.out.println("Total: $" + total);
+    }
+
+    public void sendReceipt() {
+        System.out.println("Sending receipt to user: " + user);
+        // Add logic for sending receipt (e.g., email or other methods)
     }
 
     @Override
     public String toString() {
         return "Receipt{" +
-               "ticketId='" + ticketId + '\'' +
-               ", tickets=" + tickets +
-               ", bookingDate=" + bookingDate +
-               '}';
+                "receiptID=" + receiptID +
+                ", numTickets=" + numTickets +
+                ", total=" + total +
+                ", date=" + date +
+                ", user='" + user + '\'' +
+                '}';
     }
 }
