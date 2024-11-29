@@ -55,7 +55,7 @@ public class FrontPage {
                 final int movieIndex = i;  // Declare movieIndex as final to use inside ActionListener
 
                 // Placeholder image icon
-                ImageIcon movieIcon = new ImageIcon("data/movie" + movieIndex + ".jpg");
+                ImageIcon movieIcon = new ImageIcon("MovieApp/data/movie" + movieIndex + ".jpg");
                 Image movieImage = movieIcon.getImage().getScaledInstance(150, 200, Image.SCALE_SMOOTH);
                 movieIcon = new ImageIcon(movieImage);
 
