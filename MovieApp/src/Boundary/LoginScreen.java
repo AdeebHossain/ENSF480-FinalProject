@@ -2,8 +2,6 @@ package Boundary;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class LoginScreen {
 
@@ -68,7 +66,14 @@ public class LoginScreen {
         // Action for Continue as Guest button
         guestButton.addActionListener(e -> {
             frame.dispose(); // Close current frame
-            new FrontPage(); // Open front page
+            new MovieGUI(); // Open movie GUI
+        });
+
+        // Action for Login button
+        loginButton.addActionListener(e -> {
+            // Add login validation here if needed
+            frame.dispose(); // Close current frame
+            new MovieGUI(); // Open movie GUI
         });
 
         frame.add(panel);
