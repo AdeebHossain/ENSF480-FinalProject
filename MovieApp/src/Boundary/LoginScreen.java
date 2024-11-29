@@ -67,10 +67,11 @@ public class LoginScreen {
 
         // Action for Continue as Guest button
         guestButton.addActionListener(e -> {
-            frame.dispose(); // Close current frame
-            new FrontPage(); // Open front page
+            // Code to transition to the front page
+            FrontPage.main(null); // Opens the front page
+            frame.dispose(); // Closes the login frame
         });
-
+        
         frame.add(panel);
         frame.setVisible(true);
     }
