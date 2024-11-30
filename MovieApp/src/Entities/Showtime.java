@@ -4,6 +4,7 @@ import java.util.List;
 
 public class Showtime {
     // Attributes
+    private int showtimeId; // Unique identifier for the showtime
     private Movie movie; // Movie that is being shown
     private String startTime; // Start time of the showtime
     private Date date; // Date of the showtime
@@ -19,6 +20,13 @@ public class Showtime {
     }
 
     // Getters and Setters
+    public int getShowtimeId() {
+        return showtimeId;
+    }
+
+    public void setShowtimeId(int showtimeId) {
+        this.showtimeId = showtimeId;
+    }
 
     public Date getDate() {
         return date;

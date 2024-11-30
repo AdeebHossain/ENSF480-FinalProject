@@ -30,6 +30,10 @@ public class Seat {
         this.seatNumber = seatNumber;
     }
 
+    public String getSeat(){
+        return seatRow + Integer.toString(seatNumber);
+    }
+
     public boolean isAvailable() {
         return isAvailable;
     }

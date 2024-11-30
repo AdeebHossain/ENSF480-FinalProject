@@ -5,6 +5,7 @@ import java.util.Date;
 public class Payment {
     // Attributes
     private int paymentId;
+    private Ticket ticket;
     private double amount;
     private String paymentMethod;
     private boolean paymentStatus; // true for successful, false for failed
@@ -24,6 +25,14 @@ public class Payment {
 
     public void setPaymentId(int paymentId) {
         this.paymentId = paymentId;
+    }
+
+    public Ticket getTicket() {
+        return ticket;
+    }
+
+    public void setTicket(Ticket ticket) {
+        this.ticket = ticket;
     }
 
     public double getAmount() {
