@@ -39,7 +39,7 @@ public class BookingController {
         // Process payment (assuming Payment class has getTicketId(), getAmount(), etc.)
         String insertPaymentQuery = "INSERT INTO Payment (ticket_ID, amount, payment_method, payment_status) VALUES (?, ?, ?, ?)";
         PreparedStatement paymentStatement = connection.prepareStatement(insertPaymentQuery);
-        paymentStatement.setInt(1, payment.ticket.getTicket_number());
+        paymentStatement.setInt(1, payment.getTicketNum());
         paymentStatement.setDouble(2, payment.getAmount());
         paymentStatement.setString(3, payment.getPaymentMethod());
         paymentStatement.setBoolean(4, payment.isPaymentStatus());

@@ -35,6 +35,10 @@ public class Payment {
         this.ticket = ticket;
     }
 
+    public int getTicketNum() {
+        return ticket.getTicket_number();
+    }  
+
     public double getAmount() {
         return amount;
     }
