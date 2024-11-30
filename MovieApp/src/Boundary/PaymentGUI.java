@@ -11,7 +11,7 @@ public class PaymentGUI {
 
     public PaymentGUI(String movie, int numTickets, double ticketPrice) {
         // Constants
-        double taxRate = 0.15; // 15% tax
+        double taxRate = 0.05; // 5% tax
 
         // Calculate total and tax
         double subtotal = numTickets * ticketPrice;
@@ -30,7 +30,7 @@ public class PaymentGUI {
                 SwingConstants.CENTER
         );
         JLabel subtotalLabel = new JLabel(String.format("Subtotal: $%.2f", subtotal), SwingConstants.CENTER);
-        JLabel taxLabel = new JLabel(String.format("Tax (15%%): $%.2f", tax), SwingConstants.CENTER);
+        JLabel taxLabel = new JLabel(String.format("Tax (5%%): $%.2f", tax), SwingConstants.CENTER);
         JLabel totalLabel = new JLabel(String.format("Total Amount: $%.2f", totalAmount), SwingConstants.CENTER);
 
         // Card information section

@@ -45,7 +45,7 @@ public class LoginScreen {
         constraints.gridy = 2;
         panel.add(loginButton, constraints);
 
-        // Continue as guest button
+        // Continue as Guest button
         JButton guestButton = new JButton("Continue as Guest");
         constraints.gridx = 1;
         constraints.gridy = 3;
@@ -66,14 +66,14 @@ public class LoginScreen {
         // Action for Continue as Guest button
         guestButton.addActionListener(e -> {
             frame.dispose(); // Close current frame
-            new MovieGUI(); // Open movie GUI
+            FrontPage.main(null); // Open the FrontPage
         });
 
         // Action for Login button
         loginButton.addActionListener(e -> {
             // Add login validation here if needed
             frame.dispose(); // Close current frame
-            new MovieGUI(); // Open movie GUI
+            FrontPage.main(null); // Open the FrontPage
         });
 
         frame.add(panel);
