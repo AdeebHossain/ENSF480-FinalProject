@@ -5,15 +5,15 @@ import java.util.List;
 
 public class Booking {
     // Attributes
-    private String bookingId;
+    private static int bookingId = 0;
     private User user;
     private List<Ticket> tickets; // List of tickets for this booking
     private boolean isCancelled; // Whether the booking was cancelled
     private Date bookingDate;
 
     // Constructor
-    public Booking(String bookingId, User user, List<Ticket> tickets, Date bookingDate) {
-        this.bookingId = bookingId;
+    public Booking(int bookingId, User user, List<Ticket> tickets, Date bookingDate) {
+        Booking.bookingId = bookingId ;
         this.user = user;
         this.tickets = tickets;
         this.bookingDate = bookingDate;
@@ -21,12 +21,12 @@ public class Booking {
     }
 
     // Getters and Setters
-    public String getBookingId() {
+    public int getBookingId() {
         return bookingId;
     }
 
-    public void setBookingId(String bookingId) {
-        this.bookingId = bookingId;
+    public void setBookingId() {
+        Booking.bookingId = bookingId++;
     }
 
     public User getUser() {
@@ -67,7 +67,8 @@ public class Booking {
         if (!isCancelled) {
             this.isCancelled = true;
             for (Ticket ticket : tickets) {
-                ticket.getseatNumber().cancelReservation(); // Release the reserved seats
+                ticket.getseatNumber(); 
+                
             }
         }
     }
