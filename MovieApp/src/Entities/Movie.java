@@ -12,7 +12,11 @@ public class Movie {
     private String movie_title;
     private String movie_genre;
     private String movie_summary;
+<<<<<<< HEAD:Movie App/src/Entities/Movie.java
     private double movie_price;
+=======
+    private Announcement announcement;
+>>>>>>> origin/main:MovieApp/src/Entities/Movie.java
 
     private static int movieID = 1000;
 
@@ -22,7 +26,11 @@ public class Movie {
         this.movie_title = movie_title;
         this.movie_genre = movie_genre;
         this.movie_summary = movie_summary;
+<<<<<<< HEAD:Movie App/src/Entities/Movie.java
         this.movie_price = movie_price;
+=======
+        this.announcement = null; 
+>>>>>>> origin/main:MovieApp/src/Entities/Movie.java
     }
 
     // Constructor for creating a movie with a specified ID (for example to load from a database)
@@ -37,7 +45,11 @@ public class Movie {
         this.movie_title = movie_title;
         this.movie_genre = movie_genre;
         this.movie_summary = movie_summary;
+<<<<<<< HEAD:Movie App/src/Entities/Movie.java
         this.movie_price = movie_price;
+=======
+        this.announcement = null;
+>>>>>>> origin/main:MovieApp/src/Entities/Movie.java
     }
 
     // Getters
@@ -57,8 +69,13 @@ public class Movie {
         return movie_summary;
     }
 
+<<<<<<< HEAD:Movie App/src/Entities/Movie.java
     public double getMovie_price() {
         return movie_price;
+=======
+    public Announcement getAnnouncement() {
+        return announcement;
+>>>>>>> origin/main:MovieApp/src/Entities/Movie.java
     }
 
     // Setters
@@ -78,13 +95,18 @@ public class Movie {
         this.movie_summary = movie_summary;
     }    
 
+<<<<<<< HEAD:Movie App/src/Entities/Movie.java
     public void setMovie_price(double movie_price) {
         this.movie_price = movie_price;
+=======
+    public void setAnnouncement(Announcement announcement) {
+        this.announcement = announcement;
+>>>>>>> origin/main:MovieApp/src/Entities/Movie.java
     }
 
     // Override toString to provide a description of the movie
     @Override
     public String toString() {
-        return String.format("Movie ID: %d\nTitle: %s\nGenre: %s\nSummary: %s\nPrice: $%.2f\n", movie_ID, movie_title, movie_genre, movie_summary, movie_price);
+        return String.format("Movie ID: %d\nTitle: %s\nGenre: %s\nSummary: %s\n", movie_ID, movie_title, movie_genre, movie_summary);
     }
 }

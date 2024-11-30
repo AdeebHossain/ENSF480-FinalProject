@@ -5,7 +5,7 @@ public class OrdinaryUser extends User {
     private boolean isRegistered = false; // Flag to indicate whether the user is registered
 
     // Constructor
-    public OrdinaryUser(String name, String username) {
+    public OrdinaryUser(Name name, String username) {
         super(name, username); // Call to parent constructor for name and username
     }
 

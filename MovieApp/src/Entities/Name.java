@@ -2,7 +2,7 @@ package Entities;
 
 public class Name {
     private String firstName;
-    private String middleName; // Optional
+    private String middleName; 
     private String lastName;
 
     // Constructor
@@ -44,7 +44,7 @@ public class Name {
     }
 
     // Full name method
-    public String getFullName() {
+    public String returnFullName() {
         if (middleName == null || middleName.isEmpty()) {
             return firstName + " " + lastName;
         }
@@ -54,6 +54,6 @@ public class Name {
     // ToString override for better display
     @Override
     public String toString() {
-        return getFullName();
+        return returnFullName();
     }
 }

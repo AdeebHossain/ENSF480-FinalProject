@@ -2,31 +2,31 @@ package Entities;
 
 public class Seat {
     // Attributes
-    private String seatRow;
-    private String seatNumber;
+    private char seatRow;
+    private int seatNumber;
     private boolean isAvailable;
 
     // Constructor
-    public Seat(String seatRow, String seatNumber, boolean isAvailable) {
+    public Seat(char seatRow, int seatNumber, boolean isAvailable) {
         this.seatRow = seatRow;
         this.seatNumber = seatNumber;
         this.isAvailable = isAvailable;
     }
 
     // Getters and Setters
-    public String getseatRow() {
+    public char getseatRow() {
         return seatRow;
     }
 
-    public void setseatRow(String seatRow) {
+    public void setseatRow(char seatRow) {
         this.seatRow = seatRow;
     }
 
-    public String getSeatNumber() {
+    public int getSeatNumber() {
         return seatNumber;
     }
 
-    public void setSeatNumber(String seatNumber) {
+    public void setSeatNumber(int seatNumber) {
         this.seatNumber = seatNumber;
     }
 

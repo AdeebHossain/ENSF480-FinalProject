@@ -5,17 +5,17 @@ public class RegisteredUser extends User {
     private String password;
     private String email;
     private String address;
-    private String cardNumber; // This is for RegisteredUser only
+    private BankCardInfo paymentInfo; // This is for RegisteredUser only
     private double annualFee = 20.00; // The annual fee for Registered Users
     private boolean hasDiscount = true; // Registered Users have a discount on cancellation fees
 
     // Constructor
-    public RegisteredUser(String name, String username, String password, String email, String address, String cardNumber) {
+    public RegisteredUser(Name name, String username, String password, String email, String address, BankCardInfo paymentInfo) {
         super(name, username); // Call to parent constructor for name and username
         this.password = password;
         this.email = email;
         this.address = address;
-        this.cardNumber = cardNumber; // Card number is for RegisteredUser
+        this.paymentInfo = paymentInfo; // Card number is for RegisteredUser
     }
 
     // Getters and Setters for RegisteredUser specific attributes
@@ -43,12 +43,12 @@ public class RegisteredUser extends User {
         this.address = address;
     }
 
-    public String getCardNumber() {
-        return cardNumber;
+    public BankCardInfo getpaymentInfo() {
+        return paymentInfo;
     }
 
-    public void setCardNumber(String cardNumber) {
-        this.cardNumber = cardNumber;
+    public void setpaymentInfo(BankCardInfo paymentInfo) {
+        this.paymentInfo = paymentInfo;
     }
 
     public double getAnnualFee() {
@@ -74,7 +74,7 @@ public class RegisteredUser extends User {
                ", username='" + getUsername() + '\'' +
                ", email='" + email + '\'' +
                ", address='" + address + '\'' +
-               ", cardNumber='" + cardNumber + '\'' +
+               ", paymentInfo='" + paymentInfo + '\'' +
                ", annualFee=" + annualFee +
                ", hasDiscount=" + hasDiscount +
                '}';
