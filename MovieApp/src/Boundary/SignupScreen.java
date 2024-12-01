@@ -19,16 +19,6 @@ public class SignupScreen {
         constraints.insets = new Insets(10, 10, 10, 10);
         constraints.anchor = GridBagConstraints.WEST;
 
-        // Username
-        JLabel usernameLabel = new JLabel("Username:");
-        constraints.gridx = 0;
-        constraints.gridy = 0;
-        panel.add(usernameLabel, constraints);
-
-        JTextField usernameField = new JTextField(20);
-        constraints.gridx = 1;
-        panel.add(usernameField, constraints);
-
         // Full Name
         JLabel fullNameLabel = new JLabel("Full Name:");
         constraints.gridx = 0;
