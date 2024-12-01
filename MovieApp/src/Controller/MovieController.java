@@ -61,4 +61,18 @@ public class MovieController {
         connection.execute(query, newName, newSummary, oldName);
     }
 
+    // Method to get movie duration by id
+    public String getDuration(int id) {
+        String query = "SELECT length FROM movies WHERE id = ?";
+        ResultSet results = connection.query(query, id);
+        try {
+            if (results.next()) {
+                return results.getString("length");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();    
+        }
+
+        return null;
+    }
 }

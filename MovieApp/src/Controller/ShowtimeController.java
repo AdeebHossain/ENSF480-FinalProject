@@ -3,31 +3,27 @@ package Controller;
 import java.sql.*;
 
 public class ShowtimeController {
-    private final Connection connection;
+    private  MySQLConnection connection;
 
     // Constructor to initialize the database connection
-    public ShowtimeController(Connection connection) {
-        this.connection = connection;
+    public ShowtimeController() {
+        connection = MySQLConnection.getInstance();
     }
 
-    // Method to get the showtimes for a particular movie
-    public String[] getShowtimeInfo(int id) throws SQLException {
+    public String[] getShowtimeInfo(int id){
         String query = "SELECT * FROM showtimes WHERE movie_id = ?";
-        PreparedStatement statement = connection.prepareStatement(query);
-        statement.setInt(1, id);  // Set the movie_id parameter
-    
-        ResultSet results = statement.executeQuery(); // Execute the query and get results
-    
-        // Assuming you want to return an array of strings with showtime information
-        if (results.next()) {
-            String[] showtimeInfo = new String[2];  // Adjust the size based on the number of columns you need
-            showtimeInfo[0] = results.getString("showtime_id");
-            showtimeInfo[1] = results.getString("start_time");  // Or any other column you need
-    
-            return showtimeInfo;
-        } else {
-            return null;  // Return null if no results are found
+        ResultSet results = connection.query(query, id);
+
+        String temp = "";
+        try{
+            while (results.next()){
+                temp = temp + results.getString("showtime") + " ";
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
         }
+        String[] showtimeInfo = temp.split(" ");
+        return showtimeInfo;
     }
     
 }
