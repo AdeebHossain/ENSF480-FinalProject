@@ -15,7 +15,7 @@ public class MovieController {
 
     // Method to get movie summary by ID
     public String getSummary(int id) {
-        String query = "SELECT summary FROM movie_archive WHERE id = ?";
+        String query = "SELECT summary FROM movies WHERE id = ?";
         ResultSet results = DB.query(query, id);
         try {
             if (results.next()) {
@@ -29,18 +29,18 @@ public class MovieController {
 
     // Method to add a movie
     public void addMovie(String movieName, String movieDesc, String movieLength, String dateAvail) {
-        String query = "INSERT INTO movie_archive (name, summary, length, date_available) VALUES (?, ?, ?, ?)";
+        String query = "INSERT INTO movies (name, summary, length, date_available) VALUES (?, ?, ?, ?)";
         DB.execute(query, movieName, movieDesc, movieLength, dateAvail);
     }
 
     // Method to remove a movie
     public void removeMovie(String movieName) {
-        String query = "DELETE FROM movie_archive WHERE name = ?";
+        String query = "DELETE FROM movies WHERE name = ?";
         DB.execute(query, movieName);
     }
 
     public List<String[]> getAllMovies() {
-        String query = "SELECT name, summary FROM movie_archive";
+        String query = "SELECT name, summary FROM movies";
         ResultSet results = DB.query(query);
         List<String[]> movies = new ArrayList<>();
 
