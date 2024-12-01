@@ -26,18 +26,4 @@ public class LoginController {
 
         return -1; // Return -1 if login fails
     }
-
-    public boolean checkAnnualFee(String email) {
-        String query = "SELECT annualFeeDue FROM users WHERE email = ?";
-        ResultSet results = connection.query(query, email);
-        try {
-            if (results.next()) {
-                return results.getInt("annualFeeDue") == 1; // Returns true if fee is due
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return false; // Fee is not due or no such user
-    }
-
 }

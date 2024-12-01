@@ -58,7 +58,7 @@ public class MovieController {
 
     public void updateMovie(String oldName, String newName, String newSummary) {
         String query = "UPDATE movies SET name = ?, summary = ? WHERE name = ?";
-        connection.execute(query, newName, newSummary, oldName);
+        DB.execute(query, newName, newSummary, oldName);
     }
 
 }
