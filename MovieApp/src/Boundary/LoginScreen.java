@@ -24,7 +24,8 @@ public class LoginScreen {
         GridBagConstraints constraints = new GridBagConstraints();
         constraints.insets = new Insets(10, 10, 10, 10);
 
-        JLabel usernameLabel = new JLabel("Username/Email:");
+        // Username/email label and text field
+        JLabel usernameLabel = new JLabel("Email:");
         constraints.gridx = 0;
         constraints.gridy = 0;
         constraints.anchor = GridBagConstraints.WEST;
