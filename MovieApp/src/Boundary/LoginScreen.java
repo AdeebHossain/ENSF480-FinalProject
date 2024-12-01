@@ -76,11 +76,11 @@ public class LoginScreen {
         loginButton.addActionListener(e -> {
             String email = usernameField.getText();
             String password = new String(passwordField.getPassword());
-
+        
             // Validate user login
             int role = loginController.validateUser(email, password);
             boolean feeDue = loginController.checkAnnualFee(email);
-
+        
             if (role == 0) { // Admin
                 JOptionPane.showMessageDialog(frame, "Welcome, Admin!");
                 frame.dispose();
@@ -89,12 +89,28 @@ public class LoginScreen {
                 if (feeDue) {
                     JOptionPane.showMessageDialog(frame, "You still need to pay your $20 annual fee. The amount will be withdrawn from the card on file.", "Payment Reminder", JOptionPane.WARNING_MESSAGE);
                 }
+        
+                // Show a popup with general movie news
+                JTextArea newsArea = new JTextArea("🎬 Latest Movie News 🎥\n\n"
+                    + "- Upcoming release: 'Blockbuster Hit' on 2024-12-25\n"
+                    + "- Oscar nominations announced: Best Picture includes 'Cinematic Marvel'\n"
+                    + "- Local theatres hosting a Classic Movie Night next week\n\n"
+                    + "Enjoy your movie experience!");
+                newsArea.setEditable(false);
+                newsArea.setLineWrap(true);
+                newsArea.setWrapStyleWord(true);
+        
+                JScrollPane scrollPane = new JScrollPane(newsArea);
+                scrollPane.setPreferredSize(new Dimension(300, 200));
+        
+                JOptionPane.showMessageDialog(frame, scrollPane, "Movie News", JOptionPane.INFORMATION_MESSAGE);
+        
                 frame.dispose();
                 FrontPage.main(new String[]{});
             } else {
                 JOptionPane.showMessageDialog(frame, "Invalid credentials. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
             }
-        });
+        });        
 
         // Action for Continue as Guest button
         guestButton.addActionListener(e -> {
