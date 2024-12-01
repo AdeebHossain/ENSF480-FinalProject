@@ -1,5 +1,4 @@
 package Controller;
-
 import Entities.*;
 
 public class MovieController {
