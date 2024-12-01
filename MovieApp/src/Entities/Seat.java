@@ -2,23 +2,38 @@ package Entities;
 
 public class Seat {
     // Attributes
+    private int seatId; // Unique ID for the seat (maps to the database seat_ID column)
     private char seatRow;
     private int seatNumber;
     private boolean isAvailable;
 
     // Constructor
-    public Seat(char seatRow, int seatNumber, boolean isAvailable) {
+    public Seat(int seatId, char seatRow, int seatNumber, boolean isAvailable) {
+        this.seatId = seatId;
         this.seatRow = seatRow;
         this.seatNumber = seatNumber;
         this.isAvailable = isAvailable;
     }
 
+    // Overloaded constructor for use cases where seatId is not initially available
+    public Seat(char seatRow, int seatNumber, boolean isAvailable) {
+        this(-1, seatRow, seatNumber, isAvailable); // -1 indicates uninitialized seatId
+    }
+
     // Getters and Setters
-    public char getseatRow() {
+    public int getSeatId() {
+        return seatId;
+    }
+
+    public void setSeatId(int seatId) {
+        this.seatId = seatId;
+    }
+
+    public char getSeatRow() {
         return seatRow;
     }
 
-    public void setseatRow(char seatRow) {
+    public void setSeatRow(char seatRow) {
         this.seatRow = seatRow;
     }
 
@@ -30,7 +45,7 @@ public class Seat {
         this.seatNumber = seatNumber;
     }
 
-    public String getSeat(){
+    public String getSeat() {
         return seatRow + Integer.toString(seatNumber);
     }
 
@@ -59,8 +74,9 @@ public class Seat {
     @Override
     public String toString() {
         return "Seat{" +
-               "seatRow='" + seatRow + '\'' +
-               ", seatNumber='" + seatNumber + '\'' +
+               "seatId=" + seatId +
+               ", seatRow='" + seatRow + '\'' +
+               ", seatNumber=" + seatNumber +
                ", isAvailable=" + isAvailable +
                '}';
     }
