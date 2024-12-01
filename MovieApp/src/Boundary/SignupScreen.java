@@ -1,7 +1,5 @@
 package Boundary;
 
-import Controller.SignUpController;
-
 import javax.swing.*;
 import java.awt.*;
 
@@ -20,16 +18,6 @@ public class SignupScreen {
         GridBagConstraints constraints = new GridBagConstraints();
         constraints.insets = new Insets(10, 10, 10, 10);
         constraints.anchor = GridBagConstraints.WEST;
-
-        // Username
-        JLabel usernameLabel = new JLabel("Username:");
-        constraints.gridx = 0;
-        constraints.gridy = 0;
-        panel.add(usernameLabel, constraints);
-
-        JTextField usernameField = new JTextField(20);
-        constraints.gridx = 1;
-        panel.add(usernameField, constraints);
 
         // Full Name
         JLabel fullNameLabel = new JLabel("Full Name:");
@@ -117,49 +105,6 @@ public class SignupScreen {
         backButton.addActionListener(e -> {
             frame.dispose(); // Close current frame
             new LoginScreen(); // Open login screen
-        });
-
-        // Action for Register Button
-        registerButton.addActionListener(e -> {
-            // Get the data from the fields
-            String username = usernameField.getText();
-            String fullName = fullNameField.getText();
-            String email = emailField.getText();
-            String password = new String(passwordField.getPassword());
-            String confirmPassword = new String(confirmPasswordField.getPassword());
-            String cardNumber = cardNumberField.getText();
-            String expiryDate = expiryDateField.getText();
-            String cvv = cvvField.getText();
-
-            // Validate inputs
-            if (username.isEmpty() || fullName.isEmpty() || email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty() ||
-                cardNumber.isEmpty() || expiryDate.isEmpty() || cvv.isEmpty()) {
-                JOptionPane.showMessageDialog(frame, "Please fill all fields", "Error", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-
-            if (!password.equals(confirmPassword)) {
-                JOptionPane.showMessageDialog(frame, "Passwords do not match", "Error", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-
-            // Use the SignUpController to register the user and add their card
-            SignUpController signUpController = new SignUpController();
-            boolean userAdded = signUpController.addRegUser(fullName, email, password);
-
-            if (userAdded) {
-                boolean cardAdded = signUpController.AddRegCard(fullName, cardNumber, "CVV", expiryDate); // Card number and expiry are passed for card addition
-
-                if (cardAdded) {
-                    JOptionPane.showMessageDialog(frame, "Registration successful", "Success", JOptionPane.INFORMATION_MESSAGE);
-                    frame.dispose(); // Close the signup frame
-                    new LoginScreen(); // Open the login screen
-                } else {
-                    JOptionPane.showMessageDialog(frame, "Card could not be added", "Error", JOptionPane.ERROR_MESSAGE);
-                }
-            } else {
-                JOptionPane.showMessageDialog(frame, "User already exists", "Error", JOptionPane.ERROR_MESSAGE);
-            }
         });
 
         frame.add(panel);

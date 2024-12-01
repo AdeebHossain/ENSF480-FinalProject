@@ -67,5 +67,4 @@ public class MySQLConnection {
                 e.printStackTrace();
             }
         }
-
 }
