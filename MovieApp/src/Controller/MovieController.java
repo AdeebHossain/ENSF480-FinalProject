@@ -56,5 +56,9 @@ public class MovieController {
         return movies;
     }
 
+    public void updateMovie(String oldName, String newName, String newSummary) {
+        String query = "UPDATE movies SET name = ?, summary = ? WHERE name = ?";
+        DB.execute(query, newName, newSummary, oldName);
+    }
 
 }
