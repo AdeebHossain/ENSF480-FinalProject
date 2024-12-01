@@ -23,6 +23,7 @@ public class PaymentGUI {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(600, 500); // Adjusted size
         frame.setLayout(new GridBagLayout());
+        frame.setLocationRelativeTo(null); // Center the frame on the screen
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10); // Add padding around components
 
