@@ -1,9 +1,6 @@
 package Controller;
 
-import Entities.*;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
 
 public class ShowtimeController {
     private final Connection connection;
@@ -13,64 +10,24 @@ public class ShowtimeController {
         this.connection = connection;
     }
 
-    public Showtime addShowtime(Movie movie, String startTime) throws SQLException {
-        String insertQuery = "INSERT INTO Showtime (movie_ID, start_time, is_active) VALUES (?, ?, ?)";
-        try (PreparedStatement statement = connection.prepareStatement(insertQuery, Statement.RETURN_GENERATED_KEYS)) {
-            // Set parameters
-            statement.setInt(1, movie.getMovie_ID());
-            statement.setString(2, startTime);
-            statement.setBoolean(3, true); // Assume the showtime is active by default
-
-            // Execute the query
-            int affectedRows = statement.executeUpdate();
-            if (affectedRows > 0) {
-                // Retrieve the generated showtime_ID
-                try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
-                    if (generatedKeys.next()) {
-                        int showtimeID = generatedKeys.getInt(1);
-                        return new Showtime(showtimeID, movie, startTime);
-                    } else {
-                        throw new SQLException("Failed to add showtime; no ID obtained.");
-                    }
-                }
-            } else {
-                throw new SQLException("Failed to add showtime; no rows affected.");
-            }
+    // Method to get the showtimes for a particular movie
+    public String[] getShowtimeInfo(int id) throws SQLException {
+        String query = "SELECT * FROM showtimes WHERE movie_id = ?";
+        PreparedStatement statement = connection.prepareStatement(query);
+        statement.setInt(1, id);  // Set the movie_id parameter
+    
+        ResultSet results = statement.executeQuery(); // Execute the query and get results
+    
+        // Assuming you want to return an array of strings with showtime information
+        if (results.next()) {
+            String[] showtimeInfo = new String[2];  // Adjust the size based on the number of columns you need
+            showtimeInfo[0] = results.getString("showtime_id");
+            showtimeInfo[1] = results.getString("start_time");  // Or any other column you need
+    
+            return showtimeInfo;
+        } else {
+            return null;  // Return null if no results are found
         }
     }
-
-    public void removeShowtime(Showtime showtime) throws SQLException {
-        String deleteQuery = "DELETE FROM Showtime WHERE showtime_ID = ?";
-        try (PreparedStatement statement = connection.prepareStatement(deleteQuery)) {
-            // Set parameter
-            statement.setInt(1, showtime.getShowtimeId());
-
-            // Execute the query
-            int affectedRows = statement.executeUpdate();
-            if (affectedRows == 0) {
-                throw new SQLException("No showtime found with ID: " + showtime.getShowtimeId());
-            }
-        }
-    }
-
-    public List<Showtime> getShowtimesForMovie(Movie movie) throws SQLException {
-        String selectQuery = "SELECT * FROM Showtime WHERE movie_ID = ? AND is_active = true"; // Only active showtimes
-        try (PreparedStatement statement = connection.prepareStatement(selectQuery)) {
-            // Set parameter
-            statement.setInt(1, movie.getMovie_ID());
-
-            // Execute the query and process results
-            try (ResultSet resultSet = statement.executeQuery()) {
-                List<Showtime> showtimes = new ArrayList<>();
-                while (resultSet.next()) {
-                    int showtimeID = resultSet.getInt("showtime_ID");
-                    String startTime = resultSet.getString("start_time");
-                    boolean isActive = resultSet.getBoolean("is_active");
-
-                    showtimes.add(new Showtime(showtimeID, movie, startTime));
-                }
-                return showtimes;
-            }
-        }
-    }
+    
 }
