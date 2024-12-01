@@ -4,14 +4,25 @@ import java.util.List;
 
 public class Showtime {
     // Attributes
+    private int showtimeId; // Unique identifier for the showtime
     private Movie movie; // Movie that is being shown
     private String startTime; // Start time of the showtime
     private Date date; // Date of the showtime
     private List<Seat> availableSeats; // List of available seats for the showtime
     private boolean isActive; // Whether the showtime is still active or canceled
 
-    // Constructor
-    public Showtime(Movie movie, String startTime, List<Seat> availableSeats) {
+    // Constructors
+
+    public Showtime(int showtimeId, Movie movie, String startTime) {
+        this.showtimeId = showtimeId;
+        this.movie = movie;
+        this.startTime = startTime;
+            this.isActive = true; 
+        }
+
+
+    public Showtime(int showtimeId, Movie movie, String startTime, List<Seat> availableSeats) {
+        this.showtimeId = showtimeId;
         this.movie = movie;
         this.startTime = startTime;
         this.availableSeats = availableSeats;
@@ -19,6 +30,13 @@ public class Showtime {
     }
 
     // Getters and Setters
+    public int getShowtimeId() {
+        return showtimeId;
+    }
+
+    public void setShowtimeId(int showtimeId) {
+        this.showtimeId = showtimeId;
+    }
 
     public Date getDate() {
         return date;

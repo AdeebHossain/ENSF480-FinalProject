@@ -1,26 +1,64 @@
 package Controller;
 
-import Entities.*;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MovieController {
+    private final MySQLConnection connection;
 
-    public Movie addMovie(String name, String description, String genre) {
-        // Add a new movie to the database
+    // Constructor
+    public MovieController() {
+        connection = MySQLConnection.getInstance();
     }
 
-    public void removeMovie(Movie movie) {
-        // Remove the movie from the database
+    // Method to get movie summary by ID
+    public String getSummary(int id) {
+        String query = "SELECT summary FROM movies WHERE id = ?";
+        ResultSet results = connection.query(query, id);
+        try {
+            if (results.next()) {
+                return results.getString("summary");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
-    public void alterMovie(Movie movie, String newDescription, String newGenre) {
-        // Modify movie details
+    // Method to add a movie
+    public void addMovie(String movieName, String movieDesc, String movieLength, String dateAvail) {
+        String query = "INSERT INTO movies (name, summary, length, date_available) VALUES (?, ?, ?, ?)";
+        connection.execute(query, movieName, movieDesc, movieLength, dateAvail);
     }
 
-    public void addShowtime(Movie movie, Showtime showtime) {
-        // Add a new showtime for the movie
+    // Method to remove a movie
+    public void removeMovie(String movieName) {
+        String query = "DELETE FROM movies WHERE name = ?";
+        connection.execute(query, movieName);
     }
 
-    public void removeShowtime(Movie movie, Showtime showtime) {
-        // Remove a showtime for the movie
+    public List<String[]> getAllMovies() {
+        String query = "SELECT name, summary FROM movies";
+        ResultSet results = connection.query(query);
+        List<String[]> movies = new ArrayList<>();
+
+        try {
+            while (results.next()) {
+                String name = results.getString("name");
+                String summary = results.getString("summary");
+                movies.add(new String[]{name, summary});
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return movies;
     }
+
+    public void updateMovie(String oldName, String newName, String newSummary) {
+        String query = "UPDATE movies SET name = ?, summary = ? WHERE name = ?";
+        connection.execute(query, newName, newSummary, oldName);
+    }
+
 }

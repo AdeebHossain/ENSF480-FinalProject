@@ -10,14 +10,14 @@
  public class Ticket{
     private int ticket_number;
     private Movie movie;
-    private Seat seatNumber;
+    private String seatNumber;
     private Showtime showtime;
     private Receipt receipt;
 
     private static int ticketID = 1000;
     
     // Constrctor where partial ticket object is created, however no details regarding payment and reciept are available yet
-    public Ticket(Movie movie, Seat seatNumber, Showtime showtime){
+    public Ticket(Movie movie, String seatNumber, Showtime showtime){
         this.ticket_number = ticketID;
         this.movie = movie;
         // this.theatre = theatre;
@@ -27,7 +27,7 @@
     }
 
     // Constructor where ticket object is created, includidng all payment and reciept details
-    public Ticket(int ticket_number, Movie movie, Seat seatNumber, Showtime showtime, Receipt receipt) {
+    public Ticket(int ticket_number, Movie movie, String seatNumber, Showtime showtime, Receipt receipt) {
         this.ticket_number = ticket_number;
 
         // Ensure ticketID stays ahead of the given ticket_number to avoid duplicates
@@ -55,7 +55,7 @@
     //     return theatre;
     // }
 
-    public Seat getseatNumber() {
+    public String getSeatNumber() {
         return seatNumber;
     }
 
@@ -80,7 +80,7 @@
     //     this.theatre = theatre;
     // }
 
-    public void setSeatNumber(Seat seatNumber) {
+    public void setSeatNumber(String seatNumber) {
         this.seatNumber = seatNumber;
     }
 
@@ -103,11 +103,11 @@
         System.out.println("------------------------------------");
     }
 
-    // Method to cancel the ticket
-    public void cancelTicket() {
-        if (seatNumber != null) {
-            seatNumber.cancelReservation(); // Cancel the reservation for the seat
-        }
-        System.out.println("Ticket " + ticket_number + " has been canceled.");
-    }
+    // // Method to cancel the ticket
+    // public void cancelTicket() {
+    //     if (seatNumber != null) {
+    //         seatNumber.cancelReservation(); // Cancel the reservation for the seat
+    //     }
+    //     System.out.println("Ticket " + ticket_number + " has been canceled.");
+    // }
  }

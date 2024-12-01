@@ -6,12 +6,12 @@ public class Receipt {
     // Attributes
     private int receiptID;
     private int numTickets;
-    private float total;
+    private double total;
     private Date date;
     private String user;
 
     // Constructor
-    public Receipt(int receiptID, int numTickets, float total, Date date, String user) {
+    public Receipt(int receiptID, int numTickets, double total, Date date, String user) {
         this.receiptID = receiptID;
         this.numTickets = numTickets;
         this.total = total;
@@ -36,11 +36,11 @@ public class Receipt {
         this.numTickets = numTickets;
     }
 
-    public float getTotal() {
+    public double getTotal() {
         return total;
     }
 
-    public void setTotal(float total) {
+    public void setTotal(double total) {
         this.total = total;
     }
 
