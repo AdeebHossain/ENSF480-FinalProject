@@ -2,78 +2,52 @@ package Boundary;
 
 import javax.swing.*;
 import java.awt.*;
+import Controller.LoginController;
 
 public class LoginScreen {
+    private final LoginController loginController;
 
     public LoginScreen() {
-        // Create the main frame
-        JFrame frame = new JFrame("Login Screen");
+        loginController = new LoginController();
+        initLoginScreen();
+    }
+
+    private void initLoginScreen() {
+        JFrame frame = new JFrame("Login");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(400, 300);
-        frame.setLocationRelativeTo(null); // Center the frame on the screen
+        frame.setLocationRelativeTo(null);
 
-        // Create the main panel
-        JPanel panel = new JPanel();
-        panel.setLayout(new GridBagLayout());
-        GridBagConstraints constraints = new GridBagConstraints();
-        constraints.insets = new Insets(10, 10, 10, 10);
+        JPanel panel = new JPanel(new GridLayout(4, 1, 10, 10));
 
-        // Username/email label and text field
-        JLabel usernameLabel = new JLabel("Username/Email:");
-        constraints.gridx = 0;
-        constraints.gridy = 0;
-        constraints.anchor = GridBagConstraints.WEST;
-        panel.add(usernameLabel, constraints);
+        JTextField emailField = new JTextField();
+        JPasswordField passwordField = new JPasswordField();
 
-        JTextField usernameField = new JTextField(20);
-        constraints.gridx = 1;
-        panel.add(usernameField, constraints);
+        panel.add(new JLabel("Email:"));
+        panel.add(emailField);
+        panel.add(new JLabel("Password:"));
+        panel.add(passwordField);
 
-        // Password label and password field
-        JLabel passwordLabel = new JLabel("Password:");
-        constraints.gridx = 0;
-        constraints.gridy = 1;
-        panel.add(passwordLabel, constraints);
-
-        JPasswordField passwordField = new JPasswordField(20);
-        constraints.gridx = 1;
-        panel.add(passwordField, constraints);
-
-        // Login button
         JButton loginButton = new JButton("Login");
-        constraints.gridx = 1;
-        constraints.gridy = 2;
-        panel.add(loginButton, constraints);
+        panel.add(loginButton);
 
-        // Continue as Guest button
-        JButton guestButton = new JButton("Continue as Guest");
-        constraints.gridx = 1;
-        constraints.gridy = 3;
-        panel.add(guestButton, constraints);
-
-        // Register button
-        JButton registerButton = new JButton("Register");
-        constraints.gridx = 1;
-        constraints.gridy = 4;
-        panel.add(registerButton, constraints);
-
-        // Action for Register button
-        registerButton.addActionListener(e -> {
-            frame.dispose(); // Close current frame
-            new SignupScreen(); // Open signup screen
-        });
-
-        // Action for Continue as Guest button
-        guestButton.addActionListener(e -> {
-            frame.dispose(); // Close current frame
-            FrontPage.main(null); // Open the FrontPage
-        });
-
-        // Action for Login button
         loginButton.addActionListener(e -> {
-            // Add login validation here if needed
-            frame.dispose(); // Close current frame
-            FrontPage.main(null); // Open the FrontPage
+            String email = emailField.getText();
+            String password = new String(passwordField.getPassword());
+
+            int role = loginController.validateUser(email, password);
+
+            if (role == 1) { // Admin
+                JOptionPane.showMessageDialog(frame, "Welcome, Admin!");
+                frame.dispose();
+                new AdminFrontPage(); // Navigate to Admin Front Page
+            } else if (role == 0) { // Registered or Ordinary User
+                JOptionPane.showMessageDialog(frame, "Welcome!");
+                frame.dispose();
+                FrontPage.main(new String[]{});
+            } else {
+                JOptionPane.showMessageDialog(frame, "Invalid credentials. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
         });
 
         frame.add(panel);
