@@ -74,11 +74,11 @@ public class LoginScreen {
             int role = loginController.validateUser(email, password);
             boolean feeDue = loginController.checkAnnualFee(email);
 
-            if (role == 1) { // Admin
+            if (role == 0) { // Admin
                 JOptionPane.showMessageDialog(frame, "Welcome, Admin!");
                 frame.dispose();
                 new AdminFrontPage();
-            } else if (role == 0) { // Registered User
+            } else if (role == 1) { // Registered User
                 if (feeDue) {
                     JOptionPane.showMessageDialog(frame, "You still need to pay your $20 annual fee.", "Payment Reminder", JOptionPane.WARNING_MESSAGE);
                 }
