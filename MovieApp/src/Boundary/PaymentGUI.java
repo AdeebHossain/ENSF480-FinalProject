@@ -26,6 +26,7 @@ public class PaymentGUI {
         frame.setLocationRelativeTo(null); // Center the frame on the screen
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10); // Add padding around components
+        gbc.anchor = GridBagConstraints.CENTER; // Center components
 
         // Set a background color or image (using a simple color here)
         frame.getContentPane().setBackground(new Color(240, 248, 255)); // Light blue background
@@ -47,7 +48,21 @@ public class PaymentGUI {
         JLabel totalLabel = new JLabel(String.format("Total Amount: $%.2f", totalAmount), SwingConstants.CENTER);
         totalLabel.setFont(new Font("Arial", Font.BOLD, 14));
 
-        // Card information section
+        // Email input section
+        JLabel emailLabel = new JLabel("Enter your email:", SwingConstants.CENTER);
+        emailLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+
+        JTextField emailField = new JTextField(20); // Email input field
+        emailField.setFont(new Font("Arial", Font.PLAIN, 14));
+
+        // OK button to confirm email entry
+        JButton okButton = new JButton("OK");
+        okButton.setBackground(new Color(34, 139, 34)); // Green button
+        okButton.setFont(new Font("Arial", Font.BOLD, 14));
+        okButton.setForeground(Color.WHITE);
+        okButton.setEnabled(false); // Initially disabled
+
+        // Card information section (Initially hidden)
         JLabel cardInfoLabel = new JLabel("Enter Payment Information", SwingConstants.CENTER);
         cardInfoLabel.setFont(new Font("Arial", Font.ITALIC, 14));
 
@@ -63,20 +78,37 @@ public class PaymentGUI {
         cvvField.setFont(new Font("Arial", Font.PLAIN, 14));
         cvvField.setColumns(10);
 
-        // Conditional logic for registered users
-        if (isRegisteredUser) {
-            cardInfoLabel.setText("Using existing card on file");
-            cardNumberField.setText("**** **** **** 1234"); // Masked card number -- get card number from database if user is registered, otherwise prompt for card number 
-            cardNumberField.setEditable(false);
-            expiryField.setEditable(false);
-            cvvField.setEditable(false);
-        }
-
         // Payment button
-        JButton payButton = new JButton("Pay");
+        JButton payButton = new JButton("Pay Now");
         payButton.setBackground(new Color(34, 139, 34)); // Green button
         payButton.setFont(new Font("Arial", Font.BOLD, 14));
         payButton.setForeground(Color.WHITE);
+        payButton.setEnabled(false); // Initially disabled
+
+        // Action listener to enable the OK button when a valid email is entered
+        emailField.addCaretListener(e -> {
+            String email = emailField.getText();
+            if (isValidEmail(email)) {
+                okButton.setEnabled(true); // Enable the OK button if email is valid
+            } else {
+                okButton.setEnabled(false); // Disable the button if email is not valid
+            }
+        });
+
+        // Action listener for the OK button
+        okButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Enable the "Pay" button and show the payment fields after OK
+                payButton.setEnabled(true);
+                cardInfoLabel.setVisible(true);
+                cardNumberField.setVisible(true);
+                expiryField.setVisible(true);
+                cvvField.setVisible(true);
+            }
+        });
+
+        // Action listener for the "Pay" button
         payButton.addActionListener(e -> {
             JOptionPane.showMessageDialog(frame,
                     String.format("Booking Confirmed!\nMovie: %s\nTickets: %d\nTotal: $%.2f", movie, numTickets, totalAmount)
@@ -100,23 +132,41 @@ public class PaymentGUI {
         gbc.gridy++;
         frame.add(totalLabel, gbc);
 
+        // Email and OK button beside each other, both centered
+        gbc.gridy++;
+        frame.add(emailLabel, gbc);
+
+        gbc.gridy++;
+        frame.add(emailField, gbc);
+
+        // Initially hidden card information section
         gbc.gridy++;
         frame.add(cardInfoLabel, gbc);
+        cardInfoLabel.setVisible(false); // Hide initially
 
         gbc.gridy++;
         frame.add(cardNumberField, gbc);
+        cardNumberField.setVisible(false); // Hide initially
 
         gbc.gridy++;
         frame.add(expiryField, gbc);
+        expiryField.setVisible(false); // Hide initially
 
         gbc.gridy++;
         frame.add(cvvField, gbc);
+        cvvField.setVisible(false); // Hide initially
 
+        // Payment button below email and OK button, still centered
         gbc.gridy++;
-        gbc.gridwidth = 2;
         frame.add(payButton, gbc);
 
         frame.setVisible(true);
+    }
+
+    // Method to validate the email format
+    private boolean isValidEmail(String email) {
+        // Basic email validation: checks if email contains '@' and '.'
+        return email.contains("@") && email.contains(".");
     }
 
     public static void main(String[] args) {
