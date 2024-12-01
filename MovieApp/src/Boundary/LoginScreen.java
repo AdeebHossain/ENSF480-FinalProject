@@ -60,6 +60,12 @@ public class LoginScreen {
         constraints.gridy = 4;
         panel.add(cancelBookingsButton, constraints);
 
+        JButton signUpButton = new JButton("Sign Up");
+        constraints.gridx = 1;
+        constraints.gridy = 5;
+        panel.add(signUpButton, constraints);
+
+
         // Action for Register button
         cancelBookingsButton.addActionListener(e -> {
             frame.dispose(); // Close current frame
@@ -94,6 +100,11 @@ public class LoginScreen {
         guestButton.addActionListener(e -> {
             frame.dispose();
             FrontPage.main(null);
+        });
+
+        signUpButton.addActionListener(e -> {
+            frame.dispose(); // Close the login screen
+            new SignupScreen(); // Open the SignUpScreen (you need to create this class)
         });
 
         frame.add(panel);
