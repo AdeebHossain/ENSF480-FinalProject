@@ -1,46 +1,60 @@
 package Controller;
 
-import Entities.*;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MovieController {
-    private MySQLConnection connection;
+    private MySQLConnection DB;
 
+    // Constructor
     public MovieController() {
-        this.connection = MySQLConnection.getInstance();
+        DB = MySQLConnection.getInstance();
     }
 
-    // Method to add a movie into the DB along with movie information
-    public void addMovie(String movieName, String movieDesc, String movieLength, String air_date){
-        // Convert movieLength from String to int
-        String query = "INSERT INTO movies (name, summary, length, air_date) VALUES (?,?,?,?)";
-        connection.execute(query, movieName, movieDesc, Integer.parseInt(movieLength), air_date);
+    // Method to get movie summary by ID
+    public String getSummary(int id) {
+        String query = "SELECT summary FROM movie_archive WHERE id = ?";
+        ResultSet results = DB.query(query, id);
+        try {
+            if (results.next()) {
+                return results.getString("summary");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
-    // Method to remove a movie from the DB
-    public void removeMovie(String movieName){
-        String query = "DELETE FROM movies WHERE name = ?";
-        connection.execute(query, movieName);
+    // Method to add a movie
+    public void addMovie(String movieName, String movieDesc, String movieLength, String dateAvail) {
+        String query = "INSERT INTO movie_archive (name, summary, length, date_available) VALUES (?, ?, ?, ?)";
+        DB.execute(query, movieName, movieDesc, movieLength, dateAvail);
     }
 
-    // Method to get the name of a movie
-    public String getMovieName(int movieId){
-        // Querying the correct table 'movies' and column 'movie_id'
-        String query = "SELECT name FROM movies WHERE movie_id = ?";
-        return connection.query(query, movieId).toString();
+    // Method to remove a movie
+    public void removeMovie(String movieName) {
+        String query = "DELETE FROM movie_archive WHERE name = ?";
+        DB.execute(query, movieName);
     }
 
-    // Method to get description for a movie
-    public String getMovieDesc(int movieId){
-        // Querying the correct table 'movies' and column 'movie_id'
-        String query = "SELECT summary FROM movies WHERE movie_id = ?";
-        return connection.query(query, movieId).toString();
+    public List<String[]> getAllMovies() {
+        String query = "SELECT name, summary FROM movie_archive";
+        ResultSet results = DB.query(query);
+        List<String[]> movies = new ArrayList<>();
+
+        try {
+            while (results.next()) {
+                String name = results.getString("name");
+                String summary = results.getString("summary");
+                movies.add(new String[]{name, summary});
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return movies;
     }
 
-    // Method to get the length of a movie
-    public int getMovieLength(int movieId){
-        // Querying the correct table 'movies' and column 'movie_id'
-        String query = "SELECT length FROM movies WHERE movie_id = ?";
-        return Integer.parseInt(connection.query(query, movieId).toString());
-    }
 
 }
