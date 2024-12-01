@@ -9,6 +9,7 @@ import java.util.Map;
 
 public class ShowtimesPage {
 
+    // Use a global map to store seat states across popup openings
     private static final Map<String, Boolean> seatStates = new HashMap<>();
     private static int numTickets = 0;
 
@@ -60,6 +61,7 @@ public class ShowtimesPage {
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
         JButton backButton = new JButton("Back to Movie Selection");
         JButton seatSelectionButton = new JButton("Proceed to Seat Selection");
+        seatSelectionButton.setEnabled(false); // Disable seat selection button initially
 
         JButton checkoutButton = new JButton("Proceed to Checkout");
         checkoutButton.addActionListener(e -> {
@@ -89,90 +91,94 @@ public class ShowtimesPage {
         });
 
         seatSelectionButton.addActionListener(e -> openSeatSelectionFrame(frame));
+
+        // Add listener to enable seat selection only when a showtime is selected
+        showtimeDropdown.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (showtimeDropdown.getSelectedIndex() != -1) {
+                    seatSelectionButton.setEnabled(true); // Enable the button when a showtime is selected
+                }
+            }
+        });
     }
 
     private static void openSeatSelectionFrame(JFrame parentFrame) {
         JFrame seatFrame = new JFrame("Select Your Seats");
         seatFrame.setSize(800, 600);
         seatFrame.setLayout(new BorderLayout());
-    
+
         // Load seat and screen icons
         ImageIcon availableIcon = new ImageIcon("../data/available.png");
         ImageIcon occupiedIcon = new ImageIcon("../data/occupied.png");
         ImageIcon selectedIcon = new ImageIcon("../data/selected.png");
         ImageIcon screenIcon = new ImageIcon("../data/screen.png");
-    
+
         // Add the screen icon at the top
         JLabel screenLabel = new JLabel(screenIcon, JLabel.CENTER);
         seatFrame.add(screenLabel, BorderLayout.NORTH);
-    
+
         // Create the seat grid
         JPanel seatGrid = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(4, 4, 4, 4); // Reduce gaps between buttons
-    
+
         JPanel confirmationPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         JLabel selectedSeatsLabel = new JLabel("Selected Seats: ");
         JButton confirmSeatsButton = new JButton("Confirm Seats");
-    
+
         confirmationPanel.add(selectedSeatsLabel);
         confirmationPanel.add(confirmSeatsButton);
-    
+
         String[] rows = {"A", "B", "C", "D", "E", "F"};
         String[] columns = {"1", "2", "3", "4", "5", "6", "7", "8", "9"};
-    
+
         StringBuilder selectedSeats = new StringBuilder();
-    
-        for (int row = 0; row <= rows.length; row++) {
-            for (int col = 0; col <= columns.length; col++) {
-                gbc.gridx = col;
-                gbc.gridy = row;
-    
-                if (row == 0 && col > 0) {
-                    // Column labels
-                    JLabel colLabel = new JLabel(columns[col - 1], JLabel.CENTER);
-                    seatGrid.add(colLabel, gbc);
-                } else if (col == 0 && row > 0) {
-                    // Row labels
-                    JLabel rowLabel = new JLabel(rows[row - 1], JLabel.CENTER);
-                    seatGrid.add(rowLabel, gbc);
-                } else if (row > 0 && col > 0) {
-                    // Seat buttons
-                    String seatLabel = rows[row - 1] + columns[col - 1];
-                    JButton seatButton = new JButton(availableIcon);
-                    seatButton.setPreferredSize(new Dimension(50, 35)); // Adjust seat size if needed
-                    seatButton.setBorder(BorderFactory.createEmptyBorder());
-                    seatButton.setContentAreaFilled(false);
-    
-                    if (seatStates.containsKey(seatLabel) && seatStates.get(seatLabel)) {
-                        seatButton.setIcon(occupiedIcon);
-                        seatButton.setEnabled(false);
-                    }
-    
-                    seatButton.addActionListener(seatEvent -> {
-                        if (seatButton.getIcon() == availableIcon) {
-                            seatButton.setIcon(selectedIcon);
-                            seatStates.put(seatLabel, true);
-                            selectedSeats.append(seatLabel).append(" ");
-                            selectedSeatsLabel.setText("Selected Seats: " + selectedSeats);
-                            numTickets++;
-                        } else if (seatButton.getIcon() == selectedIcon) {
-                            seatButton.setIcon(availableIcon);
-                            seatStates.put(seatLabel, false);
-                            int index = selectedSeats.indexOf(seatLabel);
-                            if (index >= 0) {
-                                selectedSeats.delete(index, index + seatLabel.length() + 1);
-                            }
-                            selectedSeatsLabel.setText("Selected Seats: " + selectedSeats);
-                            numTickets--;
-                        }
-                    });
-    
-                    seatGrid.add(seatButton, gbc);
-                }
+
+        // Check the previously selected seats and update the selectedSeats label
+        for (String seat : seatStates.keySet()) {
+            if (seatStates.get(seat)) {
+                selectedSeats.append(seat).append(" ");
             }
         }
-    
+        selectedSeatsLabel.setText("Selected Seats: " + selectedSeats.toString());
+
+        for (int row = 0; row < rows.length; row++) {
+            for (int col = 0; col < columns.length; col++) {
+                gbc.gridx = col;
+                gbc.gridy = row;
+
+                String seatLabel = rows[row] + columns[col];
+
+                // Check the seat state and set the button icon accordingly
+                JButton seatButton = new JButton(seatStates.getOrDefault(seatLabel, false) ? selectedIcon : availableIcon);
+                seatButton.setPreferredSize(new Dimension(50, 35)); // Adjust seat size if needed
+                seatButton.setBorder(BorderFactory.createEmptyBorder());
+                seatButton.setContentAreaFilled(false);
+
+                seatButton.addActionListener(seatEvent -> {
+                    if (seatButton.getIcon() == availableIcon) {
+                        seatButton.setIcon(selectedIcon);
+                        seatStates.put(seatLabel, true);
+                        selectedSeats.append(seatLabel).append(" ");
+                        selectedSeatsLabel.setText("Selected Seats: " + selectedSeats);
+                        numTickets++;
+                    } else if (seatButton.getIcon() == selectedIcon) {
+                        seatButton.setIcon(availableIcon);
+                        seatStates.put(seatLabel, false);
+                        int index = selectedSeats.indexOf(seatLabel);
+                        if (index >= 0) {
+                            selectedSeats.delete(index, index + seatLabel.length() + 1);
+                        }
+                        selectedSeatsLabel.setText("Selected Seats: " + selectedSeats);
+                        numTickets--;
+                    }
+                });
+
+                seatGrid.add(seatButton, gbc);
+            }
+        }
+
         confirmSeatsButton.addActionListener(confirmEvent -> {
             if (selectedSeats.length() == 0) {
                 JOptionPane.showMessageDialog(seatFrame, "No seats selected. Please select at least one seat.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -181,10 +187,10 @@ public class ShowtimesPage {
                 seatFrame.dispose();
             }
         });
-    
+
         seatFrame.add(seatGrid, BorderLayout.CENTER);
         seatFrame.add(confirmationPanel, BorderLayout.SOUTH);
-    
+
         seatFrame.setVisible(true);
     }
 }
