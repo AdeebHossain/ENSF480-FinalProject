@@ -11,8 +11,18 @@ public class Showtime {
     private List<Seat> availableSeats; // List of available seats for the showtime
     private boolean isActive; // Whether the showtime is still active or canceled
 
-    // Constructor
-    public Showtime(Movie movie, String startTime, List<Seat> availableSeats) {
+    // Constructors
+
+    public Showtime(int showtimeId, Movie movie, String startTime) {
+        this.showtimeId = showtimeId;
+        this.movie = movie;
+        this.startTime = startTime;
+            this.isActive = true; 
+        }
+
+
+    public Showtime(int showtimeId, Movie movie, String startTime, List<Seat> availableSeats) {
+        this.showtimeId = showtimeId;
         this.movie = movie;
         this.startTime = startTime;
         this.availableSeats = availableSeats;

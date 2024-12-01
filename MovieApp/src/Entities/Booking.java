@@ -67,7 +67,7 @@ public class Booking {
         if (!isCancelled) {
             this.isCancelled = true;
             for (Ticket ticket : tickets) {
-                ticket.getseatNumber(); 
+                ticket.getSeatNumber(); 
                 
             }
         }
