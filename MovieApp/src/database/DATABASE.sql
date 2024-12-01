@@ -92,7 +92,9 @@ INSERT INTO `cards` VALUES
 (2,'0123456789012345','01/21','234',2),
 (3,'0123456789012345','01/23','345',3),
 (4,'0123456789012345','01/24','456',4),
-(5,'0123456789012345','01/25','567',5);
+(5,'0123456789012345','01/25','567',5),
+(6,'0123456789012345','01/26','678',6),
+(7,'0123456789012345','01/27','789',7);
 UNLOCK TABLES;
 
 -- add dummy values to movies table
@@ -163,5 +165,7 @@ INSERT INTO `users` (`email`, `registered`, `password`, `name`, `annualFeeDue`) 
 ('jane.smith@example.com', 1, 'password456', 'Jane Smith', 1),
 ('bob.jones@example.com', 1, 'password789', 'Bob Jones', 0),
 ('alice.williams@example.com', 1, 'password101', 'Alice Williams', 0),
-('tom.brown@example.com', 1, 'password102', 'Tom Brown', 1);
+('tom.brown@example.com', 1, 'password102', 'Tom Brown', 1),
+('emma.johnson@example.com', 0, 'password112', 'Emma Johnson', 1),
+('david.lee@example.com', 0, 'password113', 'David Lee', 0);
 UNLOCK TABLES;
