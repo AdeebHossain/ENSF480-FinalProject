@@ -9,7 +9,7 @@ public class LoginScreen {
         // Create the main frame
         JFrame frame = new JFrame("Login Screen");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(400, 300);
+        frame.setSize(400, 400);
         frame.setLocationRelativeTo(null); // Center the frame on the screen
 
         // Create the main panel
@@ -57,6 +57,12 @@ public class LoginScreen {
         constraints.gridy = 4;
         panel.add(registerButton, constraints);
 
+        // Cancel Bookings button
+        JButton cancelBookingsButton = new JButton("Cancel Bookings");
+        constraints.gridx = 1;
+        constraints.gridy = 5;
+        panel.add(cancelBookingsButton, constraints);
+
         // Action for Register button
         registerButton.addActionListener(e -> {
             frame.dispose(); // Close current frame
@@ -71,9 +77,14 @@ public class LoginScreen {
 
         // Action for Login button
         loginButton.addActionListener(e -> {
-            // Add login validation here if needed
             frame.dispose(); // Close current frame
             FrontPage.main(null); // Open the FrontPage
+        });
+
+        // Action for Cancel Bookings button
+        cancelBookingsButton.addActionListener(e -> {
+            frame.dispose(); // Close current frame
+            new BookingCancellation(); // Open BookingCancellation screen
         });
 
         frame.add(panel);
