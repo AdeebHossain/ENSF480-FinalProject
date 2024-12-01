@@ -128,11 +128,18 @@ public class SignupScreen {
                 return;
             }
 
+            // Email validation (basic format check)
+            String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+            if (!email.matches(emailRegex)) {
+                JOptionPane.showMessageDialog(frame, "Invalid email format.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
             // Call SignUpController to register the user
             boolean userRegistered = signUpController.addRegUser(fullName, email, password);
             if (userRegistered) {
                 // Add the card information
-                boolean cardAdded = signUpController.AddRegCard(fullName, cardNumber, cvv, expiryDate);
+                boolean cardAdded = signUpController.AddRegCard(cardNumber, cvv, expiryDate, email);
                 if (cardAdded) {
                     JOptionPane.showMessageDialog(frame, "Registration Successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
                     frame.dispose(); // Close the current frame
