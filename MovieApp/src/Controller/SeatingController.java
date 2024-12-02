@@ -10,7 +10,7 @@ public class SeatingController {
 
     // Constructor to initialize the database connection via MySQLConnection singleton
     public SeatingController() {
-        this.connection = MySQLConnection.getInstance();
+        connection = MySQLConnection.getInstance();
     }
 
     // Method to get the seating arrangement and availability for all seats (without using theatreId)
