@@ -77,4 +77,18 @@ public class MovieController {
 
         return null;
     }
+
+    public Integer getMovieIdByName(String movieName) {
+        String query = "SELECT movie_id FROM movies WHERE name = ?";
+        ResultSet results = connection.query(query, movieName); // Assuming `connection.query` handles queries with parameters
+        try {
+            if (results.next()) {
+                return results.getInt("movie_id"); // Return the movie_id if found
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // Log the exception for debugging purposes
+        }
+        return null; // Return null if no match is found
+    }    
+
 }

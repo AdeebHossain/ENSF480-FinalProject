@@ -16,8 +16,8 @@ public class ShowtimesPage {
     private static int numTickets = 0;
     private static final SeatingController seatingController = new SeatingController();
 
-    public static void show(String movieTitle, String[] showtimes, String movieDescription, String movieLength, ImageIcon movieImage) {
-        JFrame frame = new JFrame("Showtimes - " + movieTitle);
+    public static void show(String movieTitle, String[] showtimes, String movieDescription, ImageIcon movieImage, int movieLength) {
+        JFrame frame = new JFrame("Showtimes - " + movieTitle + " " + movieLength);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(800, 600);
         frame.setLocationRelativeTo(null);
@@ -34,15 +34,16 @@ public class ShowtimesPage {
         imageLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
 
         // Combine description and length
-        JTextArea descriptionArea = new JTextArea(movieDescription + "\n\nLength: " + movieLength + " minutes");
+        JTextArea descriptionArea = new JTextArea(movieDescription);
         descriptionArea.setLineWrap(true);
         descriptionArea.setWrapStyleWord(true);
         descriptionArea.setEditable(false);
         descriptionArea.setFont(new Font("Arial", Font.PLAIN, 16));
         descriptionArea.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        descriptionArea.setPreferredSize(new Dimension(500, 300));
+        descriptionArea.setPreferredSize(new Dimension(500, 300)); // Increase the description area size
 
         JScrollPane descriptionScrollPane = new JScrollPane(descriptionArea);
+
 
         topPanel.add(imageLabel);
         topPanel.add(descriptionScrollPane);

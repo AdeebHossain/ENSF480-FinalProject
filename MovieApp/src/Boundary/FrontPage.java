@@ -2,6 +2,7 @@ package Boundary;
 
 import javax.swing.*;
 import java.awt.*;
+import java.sql.*;
 import java.util.List;
 import Controller.MovieController;
 import Controller.ShowtimeController;
@@ -38,7 +39,7 @@ public class FrontPage {
 
             // Fetch movie data from the database
             MovieController movieController = new MovieController();
-            ShowtimeController showtimeController = new ShowtimeController(); // Pass the connection if needed
+            ShowtimeController showtimeController = new ShowtimeController();
 
             List<String[]> movies = movieController.getAllMovies(); // Assuming this method returns a list of [name, description]
 
@@ -46,25 +47,19 @@ public class FrontPage {
             for (String[] movie : movies) {
                 final String movieName = movie[0];
                 final String movieDescription = movie[1];
-                final String movieLength = movie[2];
+                final int movieLength = Integer.parseInt(movie[2]); // Movie length is now parsed as an integer
+                
+                // Fetch the movie ID to retrieve showtimes
+                int movieId = movieController.getMovieIdByName(movieName);
+
+                // Retrieve showtimes using the ShowtimeController
+                final String[] showtimes = showtimeController.getShowtimeInfo(movieId);
 
                 // Placeholder for movie poster images
                 final ImageIcon movieIcon;
                 Image movieImage = new ImageIcon("../data/movie" + (movieIndex + 1) + ".jpg").getImage()
-                        .getScaledInstance(150, 200, Image.SCALE_SMOOTH);
+                    .getScaledInstance(150, 200, Image.SCALE_SMOOTH);
                 movieIcon = new ImageIcon(movieImage);
-
-                // Fetch showtimes for the movie
-                final String[] showtimes = new String[0]; // Initialize as an empty array by default
-
-                try {
-                    String[] fetchedShowtimes = showtimeController.getShowtimeInfo(movieIndex + 1); // Fetch showtimes from database
-                    // Reassign showtimes to fetched data
-                    System.arraycopy(fetchedShowtimes, 0, showtimes, 0, fetchedShowtimes.length);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
 
                 JButton movieButton = new JButton(movieIcon);
                 movieButton.setPreferredSize(new Dimension(150, 200));
@@ -73,11 +68,11 @@ public class FrontPage {
                 movieButton.addActionListener(e -> {
                     frame.dispose();
                     ShowtimesPage.show(
-                            movieName,
-                            showtimes,
-                            movieDescription,
-                            movieLength, // Include movie length in the description
-                            movieIcon
+                        movieName,
+                        showtimes,
+                        movieDescription,
+                        movieIcon,
+                        movieLength // Send the movie length
                     );
                 });
 
