@@ -8,6 +8,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.List; // This imports the List interface with generics
+import java.util.ArrayList; // Import ArrayList for actual implementation
+
 
 public class ShowtimesPage {
 
@@ -43,7 +46,6 @@ public class ShowtimesPage {
         descriptionArea.setPreferredSize(new Dimension(500, 300)); // Increase the description area size
 
         JScrollPane descriptionScrollPane = new JScrollPane(descriptionArea);
-
 
         topPanel.add(imageLabel);
         topPanel.add(descriptionScrollPane);
@@ -136,9 +138,6 @@ public class ShowtimesPage {
 
         StringBuilder selectedSeats = new StringBuilder();
 
-        // Fetch the seat availability from the database
-        java.util.List<String[]> seatAvailability = seatingController.getSeatsAvailability();
-
         // Check the previously selected seats and update the selectedSeats label
         for (String seat : seatStates.keySet()) {
             if (seatStates.get(seat)) {
@@ -147,6 +146,7 @@ public class ShowtimesPage {
         }
         selectedSeatsLabel.setText("Selected Seats: " + selectedSeats.toString());
 
+        // Load seat availability from the database
         for (int row = 0; row < rows.length; row++) {
             for (int col = 0; col < columns.length; col++) {
                 gbc.gridx = col;
@@ -154,22 +154,11 @@ public class ShowtimesPage {
 
                 String seatLabel = rows[row] + columns[col];
 
-                // Check the seat availability from the database
-                String seatStatus = "Available";
-                for (String[] seat : seatAvailability) {
-                    if (seat[0].equals(rows[row]) && seat[1].equals(columns[col])) {
-                        seatStatus = seat[2];
-                        break;
-                    }
-                }
+                // Check seat availability
+                boolean isReserved = isSeatReserved(seatLabel);
 
-                // Set the seat button icon based on the availability
-                ImageIcon seatIcon = availableIcon;
-                if ("Reserved".equals(seatStatus)) {
-                    seatIcon = occupiedIcon;
-                }
-
-                JButton seatButton = new JButton(seatIcon);
+                // Set the appropriate icon based on availability
+                JButton seatButton = new JButton(isReserved ? occupiedIcon : availableIcon);
                 seatButton.setPreferredSize(new Dimension(50, 35)); // Adjust seat size if needed
                 seatButton.setBorder(BorderFactory.createEmptyBorder());
                 seatButton.setContentAreaFilled(false);
@@ -201,14 +190,6 @@ public class ShowtimesPage {
             if (selectedSeats.length() == 0) {
                 JOptionPane.showMessageDialog(seatFrame, "No seats selected. Please select at least one seat.", "Error", JOptionPane.ERROR_MESSAGE);
             } else {
-                // Call reserveSeat for each selected seat
-                for (String seat : seatStates.keySet()) {
-                    if (seatStates.get(seat)) {
-                        String row = seat.substring(0, 1);
-                        int col = Integer.parseInt(seat.substring(1));
-                        seatingController.reserveSeat(row, col);
-                    }
-                }
                 JOptionPane.showMessageDialog(seatFrame, "Seats confirmed: " + selectedSeats, "Confirmation", JOptionPane.INFORMATION_MESSAGE);
                 seatFrame.dispose();
             }
@@ -218,5 +199,20 @@ public class ShowtimesPage {
         seatFrame.add(confirmationPanel, BorderLayout.SOUTH);
 
         seatFrame.setVisible(true);
+    }
+
+    private static boolean isSeatReserved(String seatLabel) {
+        // Query seat availability using the SeatingController
+        List<String[]> seatAvailability = seatingController.getSeatsAvailability();
+        for (String[] seat : seatAvailability) {
+            String row = seat[0];
+            String col = seat[1];
+            String status = seat[2];
+
+            if ((row + col).equals(seatLabel)) {
+                return status.equals("Reserved");
+            }
+        }
+        return false;
     }
 }
