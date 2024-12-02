@@ -52,7 +52,7 @@ public class AdminFrontPage {
             JTextField summaryField = new JTextField();
             JTextField lengthField = new JTextField();
             JTextField airDateField = new JTextField();
-
+        
             JPanel inputPanel = new JPanel(new GridLayout(4, 2));
             inputPanel.add(new JLabel("Name:"));
             inputPanel.add(nameField);
@@ -62,17 +62,27 @@ public class AdminFrontPage {
             inputPanel.add(lengthField);
             inputPanel.add(new JLabel("Air Date (YYYY-MM-DD):"));
             inputPanel.add(airDateField);
-
+        
             int result = JOptionPane.showConfirmDialog(frame, inputPanel, "Add New Movie", JOptionPane.OK_CANCEL_OPTION);
             if (result == JOptionPane.OK_OPTION) {
                 try {
                     String name = nameField.getText();
                     String summary = summaryField.getText();
-                    String length = lengthField.getText();
+                    String lengthStr = lengthField.getText();
                     String airDate = airDateField.getText();
-
+        
+                    // Convert length to integer
+                    int length = Integer.parseInt(lengthStr); 
+        
+                    // Validate the date format (optional)
+                    if (!isValidDate(airDate)) {
+                        JOptionPane.showMessageDialog(frame, "Invalid date format. Please use YYYY-MM-DD.", "Error", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+        
+                    // Add the movie using the controller
                     movieController.addMovie(name, summary, length, airDate);
-                    refreshMovieTable(tableModel);
+                    refreshMovieTable(tableModel);  // Refresh the table after adding the movie
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(frame, "Invalid input. Please check the fields.", "Error", JOptionPane.ERROR_MESSAGE);
                 }
@@ -122,6 +132,15 @@ public class AdminFrontPage {
         frame.add(panel);
         frame.setVisible(true);
     }
+
+    private boolean isValidDate(String dateStr) {
+        try {
+            java.sql.Date.valueOf(dateStr);  // This will throw an exception if the format is incorrect
+            return true;
+        } catch (IllegalArgumentException e) {
+            return false;
+        }
+    }    
 
     private void refreshMovieTable(DefaultTableModel tableModel) {
         tableModel.setRowCount(0);

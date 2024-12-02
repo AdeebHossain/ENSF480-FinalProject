@@ -28,8 +28,8 @@ public class MovieController {
     }
 
     // Method to add a movie
-    public void addMovie(String movieName, String movieDesc, String movieLength, String dateAvail) {
-        String query = "INSERT INTO movies (name, summary, length, date_available) VALUES (?, ?, ?, ?)";
+    public void addMovie(String movieName, String movieDesc, int movieLength, String dateAvail) {
+        String query = "INSERT INTO movies (name, summary, length, air_date) VALUES (?, ?, ?, ?)";
         connection.execute(query, movieName, movieDesc, movieLength, dateAvail);
     }
 
