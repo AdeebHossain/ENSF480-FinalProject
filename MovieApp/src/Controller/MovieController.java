@@ -83,12 +83,15 @@ public class MovieController {
         ResultSet results = connection.query(query, movieName); // Assuming `connection.query` handles queries with parameters
         try {
             if (results.next()) {
-                return results.getInt("movie_id"); // Return the movie_id if found
+                int movieId = results.getInt("movie_id"); // Retrieve the movie_id
+                System.out.println("Retrieved movie ID: " + movieId); // Print the movie ID to the terminal
+                return movieId; // Return the movie_id
             }
         } catch (SQLException e) {
             e.printStackTrace(); // Log the exception for debugging purposes
         }
+        System.out.println("No movie found with the name: " + movieName); // Print a message if no match is found
         return null; // Return null if no match is found
-    }    
+    }
 
 }
