@@ -48,12 +48,12 @@ public class LoginController {
         try {
             if (result.next()) {
                 int isRegistered = result.getInt("registered");
-                return isRegistered == 1 ? 1.0 : 0.85; // 100% credit if registered, else 85%
+                return isRegistered == 1 ? 0.1 : 0.85; // 100% credit if registered, else 85%
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        return 0.0; // Return 0 if user is not found or error occurs
+        return 0.85; // Return 0 if user is not found or error occurs
     }
 }
