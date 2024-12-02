@@ -1,15 +1,10 @@
 package Boundary;
 
 import Controller.SeatingController;
-
-import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.List; // This imports the List interface with generics
-import java.util.ArrayList; // Import ArrayList for actual implementation
+import javax.swing.*;
 
 
 public class ShowtimesPage {
