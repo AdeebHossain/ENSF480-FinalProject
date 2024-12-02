@@ -55,13 +55,16 @@ public class FrontPage {
                 movieIcon = new ImageIcon(movieImage);
 
                 // Fetch showtimes for the movie
-                final String[] showtimes;
+                final String[] showtimes = new String[0]; // Initialize as an empty array by default
+
                 try {
-                    showtimes = showtimeController.getShowtimeInfo(movieIndex + 1); // Assume movieIndex matches movie_id
+                    String[] fetchedShowtimes = showtimeController.getShowtimeInfo(movieIndex + 1); // Fetch showtimes from database
+                    // Reassign showtimes to fetched data
+                    System.arraycopy(fetchedShowtimes, 0, showtimes, 0, fetchedShowtimes.length);
                 } catch (Exception e) {
                     e.printStackTrace();
-                    continue;
                 }
+
 
                 JButton movieButton = new JButton(movieIcon);
                 movieButton.setPreferredSize(new Dimension(150, 200));
