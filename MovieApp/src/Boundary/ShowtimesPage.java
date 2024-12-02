@@ -146,7 +146,6 @@ public class ShowtimesPage {
         }
         selectedSeatsLabel.setText("Selected Seats: " + selectedSeats.toString());
 
-        // Load seat availability from the database
         for (int row = 0; row < rows.length; row++) {
             for (int col = 0; col < columns.length; col++) {
                 gbc.gridx = col;
@@ -154,11 +153,8 @@ public class ShowtimesPage {
 
                 String seatLabel = rows[row] + columns[col];
 
-                // Check seat availability
-                boolean isReserved = isSeatReserved(seatLabel);
-
-                // Set the appropriate icon based on availability
-                JButton seatButton = new JButton(isReserved ? occupiedIcon : availableIcon);
+                // Check the seat state and set the button icon accordingly
+                JButton seatButton = new JButton(seatStates.getOrDefault(seatLabel, false) ? selectedIcon : availableIcon);
                 seatButton.setPreferredSize(new Dimension(50, 35)); // Adjust seat size if needed
                 seatButton.setBorder(BorderFactory.createEmptyBorder());
                 seatButton.setContentAreaFilled(false);
@@ -199,20 +195,5 @@ public class ShowtimesPage {
         seatFrame.add(confirmationPanel, BorderLayout.SOUTH);
 
         seatFrame.setVisible(true);
-    }
-
-    private static boolean isSeatReserved(String seatLabel) {
-        // Query seat availability using the SeatingController
-        List<String[]> seatAvailability = seatingController.getSeatsAvailability();
-        for (String[] seat : seatAvailability) {
-            String row = seat[0];
-            String col = seat[1];
-            String status = seat[2];
-
-            if ((row + col).equals(seatLabel)) {
-                return status.equals("Reserved");
-            }
-        }
-        return false;
     }
 }
