@@ -200,6 +200,14 @@ public class ShowtimesPage {
             if (selectedSeats.length() == 0) {
                 JOptionPane.showMessageDialog(seatFrame, "No seats selected. Please select at least one seat.", "Error", JOptionPane.ERROR_MESSAGE);
             } else {
+                // Call reserveSeat for each selected seat
+                for (String seat : seatStates.keySet()) {
+                    if (seatStates.get(seat)) {
+                        String row = seat.substring(0, 1);
+                        int col = Integer.parseInt(seat.substring(1));
+                        seatingController.reserveSeat(row, col);
+                    }
+                }
                 JOptionPane.showMessageDialog(seatFrame, "Seats confirmed: " + selectedSeats, "Confirmation", JOptionPane.INFORMATION_MESSAGE);
                 seatFrame.dispose();
             }
