@@ -48,7 +48,7 @@ public class LoginController {
         try {
             if (result.next()) {
                 int isRegistered = result.getInt("registered");
-                return isRegistered == 1 ? 0.1 : 0.85; // 100% credit if registered, else 85%
+                return isRegistered == 1 ? 1.0 : 0.85; // 100% credit if registered, else 85%
             }
         } catch (SQLException e) {
             e.printStackTrace();
