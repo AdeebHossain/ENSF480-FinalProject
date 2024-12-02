@@ -1,6 +1,8 @@
 package Controller;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SeatingController {
 
@@ -12,17 +14,27 @@ public class SeatingController {
     }
 
     // Method to get the seating arrangement and availability for all seats (without using theatreId)
-    public void getSeatsAvailability() {
+    public List<String[]> getSeatsAvailability() {
         String query = "SELECT row, col, reserved FROM seats";
+        List<String[]> seatAvailability = new ArrayList<>();
+
         try (ResultSet rs = connection.query(query)) {
             while (rs.next()) {
                 String row = rs.getString("row");
                 int col = rs.getInt("col");
                 boolean isReserved = rs.getInt("reserved") == 1;
+
+                // Convert the boolean reserved status to a string representation
+                String status = isReserved ? "Reserved" : "Available";
+
+                // Add the seat info as an array to the list
+                seatAvailability.add(new String[]{row, String.valueOf(col), status});
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+        return seatAvailability;
     }
 
     // Method to reserve a seat based on row and column
