@@ -110,78 +110,81 @@ public class ShowtimesPage {
         JFrame seatFrame = new JFrame("Select Your Seats");
         seatFrame.setSize(800, 600);
         seatFrame.setLayout(new BorderLayout());
-
+    
         // Load seat and screen icons
         ImageIcon availableIcon = new ImageIcon("../data/available.png");
         ImageIcon occupiedIcon = new ImageIcon("../data/occupied.png");
         ImageIcon selectedIcon = new ImageIcon("../data/selected.png");
         ImageIcon screenIcon = new ImageIcon("../data/screen.png");
-
+    
         // Add the screen icon at the top
         JLabel screenLabel = new JLabel(screenIcon, JLabel.CENTER);
         seatFrame.add(screenLabel, BorderLayout.NORTH);
-
+    
         // Create the seat grid
         JPanel seatGrid = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(4, 4, 4, 4); // Reduce gaps between buttons
-
+    
         JPanel confirmationPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         JLabel selectedSeatsLabel = new JLabel("Selected Seats: ");
         JButton confirmSeatsButton = new JButton("Confirm Seats");
-
+    
         confirmationPanel.add(selectedSeatsLabel);
         confirmationPanel.add(confirmSeatsButton);
-
-        String[] rows = {"A", "B", "C", "D", "E", "F"};
-        String[] columns = {"1", "2", "3", "4", "5", "6", "7", "8", "9"};
-
+    
         StringBuilder selectedSeats = new StringBuilder();
-
-        // Check the previously selected seats and update the selectedSeats label
-        for (String seat : seatStates.keySet()) {
-            if (seatStates.get(seat)) {
-                selectedSeats.append(seat).append(" ");
+    
+        // Fetch seat availability
+        List<String[]> seatAvailability = seatingController.getSeatsAvailability();
+    
+        // Dynamically create seat buttons based on availability
+        for (String[] seat : seatAvailability) {
+            String row = seat[0];
+            String col = seat[1];
+            String status = seat[2];
+            String seatLabel = row + col;
+    
+            // Determine icon based on status
+            ImageIcon currentIcon = "Reserved".equals(status) ? occupiedIcon : availableIcon;
+    
+            JButton seatButton = new JButton(currentIcon);
+            seatButton.setPreferredSize(new Dimension(50, 35)); // Adjust seat size if needed
+            seatButton.setBorder(BorderFactory.createEmptyBorder());
+            seatButton.setContentAreaFilled(false);
+    
+            // Restore previously selected seats
+            if (seatStates.getOrDefault(seatLabel, false)) {
+                seatButton.setIcon(selectedIcon);
+                selectedSeats.append(seatLabel).append(" ");
+                numTickets++;
             }
-        }
-        selectedSeatsLabel.setText("Selected Seats: " + selectedSeats.toString());
-
-        for (int row = 0; row < rows.length; row++) {
-            for (int col = 0; col < columns.length; col++) {
-                gbc.gridx = col;
-                gbc.gridy = row;
-
-                String seatLabel = rows[row] + columns[col];
-
-                // Check the seat state and set the button icon accordingly
-                JButton seatButton = new JButton(seatStates.getOrDefault(seatLabel, false) ? selectedIcon : availableIcon);
-                seatButton.setPreferredSize(new Dimension(50, 35)); // Adjust seat size if needed
-                seatButton.setBorder(BorderFactory.createEmptyBorder());
-                seatButton.setContentAreaFilled(false);
-
-                seatButton.addActionListener(seatEvent -> {
-                    if (seatButton.getIcon() == availableIcon) {
-                        seatButton.setIcon(selectedIcon);
-                        seatStates.put(seatLabel, true);
-                        selectedSeats.append(seatLabel).append(" ");
-                        selectedSeatsLabel.setText("Selected Seats: " + selectedSeats);
-                        numTickets++;
-                    } else if (seatButton.getIcon() == selectedIcon) {
-                        seatButton.setIcon(availableIcon);
-                        seatStates.put(seatLabel, false);
-                        int index = selectedSeats.indexOf(seatLabel);
-                        if (index >= 0) {
-                            selectedSeats.delete(index, index + seatLabel.length() + 1);
-                        }
-                        selectedSeatsLabel.setText("Selected Seats: " + selectedSeats);
-                        numTickets--;
+    
+            seatButton.addActionListener(seatEvent -> {
+                if (seatButton.getIcon() == availableIcon) {
+                    seatButton.setIcon(selectedIcon);
+                    seatStates.put(seatLabel, true);
+                    selectedSeats.append(seatLabel).append(" ");
+                    selectedSeatsLabel.setText("Selected Seats: " + selectedSeats);
+                    numTickets++;
+                } else if (seatButton.getIcon() == selectedIcon) {
+                    seatButton.setIcon(availableIcon);
+                    seatStates.put(seatLabel, false);
+                    int index = selectedSeats.indexOf(seatLabel);
+                    if (index >= 0) {
+                        selectedSeats.delete(index, index + seatLabel.length() + 1);
                     }
-                });
-
-                seatGrid.add(seatButton, gbc);
-            }
+                    selectedSeatsLabel.setText("Selected Seats: " + selectedSeats);
+                    numTickets--;
+                }
+            });
+    
+            gbc.gridx = Integer.parseInt(col) - 1; // Columns are 1-indexed
+            gbc.gridy = row.charAt(0) - 'A'; // Convert row char to zero-based index
+    
+            seatGrid.add(seatButton, gbc);
         }
-
+    
         confirmSeatsButton.addActionListener(confirmEvent -> {
             if (selectedSeats.length() == 0) {
                 JOptionPane.showMessageDialog(seatFrame, "No seats selected. Please select at least one seat.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -190,10 +193,11 @@ public class ShowtimesPage {
                 seatFrame.dispose();
             }
         });
-
+    
         seatFrame.add(seatGrid, BorderLayout.CENTER);
         seatFrame.add(confirmationPanel, BorderLayout.SOUTH);
-
+    
         seatFrame.setVisible(true);
     }
+    
 }
