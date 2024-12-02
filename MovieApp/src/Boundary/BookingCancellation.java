@@ -121,14 +121,23 @@ public class BookingCancellation {
             }
         });
 
-        // View ticket information (example)
+        // View ticket information (fetch actual ticket data from database)
         viewButton.addActionListener(e -> {
             String selected = ticketList.getSelectedValue();
             if (selected != null) {
-                // Fetch and display ticket info (replace with actual DB query)
-                JOptionPane.showMessageDialog(frame,
-                        "Ticket Info:\nMovie: Example Movie\nShowtime: 7:00 PM\nSeats: A1, A2",
-                        "Ticket Info", JOptionPane.INFORMATION_MESSAGE);
+                try {
+                    int ticketId = Integer.parseInt(selected);
+                    String[] ticketInfo = ticketController.getTicketInfo(ticketId);
+                    if (ticketInfo != null) {
+                        String ticketDetails = String.format("Ticket Info:\nUser: %s\nSeats: %s\nPrice: $%s\nShowtime: %s",
+                                ticketInfo[0], ticketInfo[1], ticketInfo[4], ticketInfo[5]);
+                        JOptionPane.showMessageDialog(frame, ticketDetails, "Ticket Info", JOptionPane.INFORMATION_MESSAGE);
+                    } else {
+                        JOptionPane.showMessageDialog(frame, "Ticket not found!", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(frame, "Invalid ticket ID format!", "Error", JOptionPane.ERROR_MESSAGE);
+                }
             }
         });
 
@@ -136,7 +145,6 @@ public class BookingCancellation {
         confirmButton.addActionListener(e -> {
             String email = emailField.getText().trim();
             if (!email.isEmpty() && !ticketIds.isEmpty()) {
-                // Iterate over the ticket IDs and cancel each one
                 for (String ticketIdStr : ticketIds) {
                     try {
                         int ticketId = Integer.parseInt(ticketIdStr);
@@ -145,8 +153,9 @@ public class BookingCancellation {
                             // Get ticket info to release the seat
                             String[] ticketInfo = ticketController.getTicketInfo(ticketId);
                             if (ticketInfo != null) {
-                                int seatId = Integer.parseInt(ticketInfo[1]);
-                                seatingController.releaseSeat(seatId);  // Release the seat
+                                int seatId = Integer.parseInt(ticketInfo[1]); // Seat ID
+                                // Release the seat
+                                seatingController.releaseSeat(seatId);
                             }
                         }
                     } catch (NumberFormatException ex) {
