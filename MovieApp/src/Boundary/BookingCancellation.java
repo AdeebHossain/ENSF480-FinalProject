@@ -1,12 +1,21 @@
 package Boundary;
 
+import Controller.TicketController;
+import Controller.SeatingController;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 
 public class BookingCancellation {
 
+    private TicketController ticketController;
+    private SeatingController seatingController;
+
     public BookingCancellation() {
+        ticketController = new TicketController();
+        seatingController = new SeatingController();
+
         JFrame frame = new JFrame("Booking Cancellation");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(600, 500); // Adjusted size
@@ -103,6 +112,7 @@ public class BookingCancellation {
             }
         });
 
+        // Delete selected ticket ID from the list
         deleteButton.addActionListener(e -> {
             String selected = ticketList.getSelectedValue();
             if (selected != null) {
@@ -111,19 +121,39 @@ public class BookingCancellation {
             }
         });
 
+        // View ticket information (example)
         viewButton.addActionListener(e -> {
             String selected = ticketList.getSelectedValue();
             if (selected != null) {
-                // Simulate fetching and displaying ticket info (replace with database query)
+                // Fetch and display ticket info (replace with actual DB query)
                 JOptionPane.showMessageDialog(frame,
                         "Ticket Info:\nMovie: Example Movie\nShowtime: 7:00 PM\nSeats: A1, A2",
                         "Ticket Info", JOptionPane.INFORMATION_MESSAGE);
             }
         });
 
+        // Confirm cancellation logic
         confirmButton.addActionListener(e -> {
             String email = emailField.getText().trim();
-            if (!email.isEmpty()) {
+            if (!email.isEmpty() && !ticketIds.isEmpty()) {
+                // Iterate over the ticket IDs and cancel each one
+                for (String ticketIdStr : ticketIds) {
+                    try {
+                        int ticketId = Integer.parseInt(ticketIdStr);
+                        // Remove the ticket from the database
+                        if (ticketController.removeTicket(ticketId)) {
+                            // Get ticket info to release the seat
+                            String[] ticketInfo = ticketController.getTicketInfo(ticketId);
+                            if (ticketInfo != null) {
+                                int seatId = Integer.parseInt(ticketInfo[1]);
+                                seatingController.releaseSeat(seatId);  // Release the seat
+                            }
+                        }
+                    } catch (NumberFormatException ex) {
+                        JOptionPane.showMessageDialog(frame, "Invalid ticket ID: " + ticketIdStr);
+                    }
+                }
+
                 // Simulate email validation and refund logic
                 boolean isRegistered = true; // Replace with actual check
                 String refundAmount = isRegistered ? "100%" : "85%";
@@ -131,6 +161,8 @@ public class BookingCancellation {
                         String.format("Cancellation confirmed.\nRefund: %s credit sent to %s.", refundAmount, email),
                         "Cancellation Success", JOptionPane.INFORMATION_MESSAGE);
                 frame.dispose(); // Close window
+            } else {
+                JOptionPane.showMessageDialog(frame, "Please enter a valid email and select at least one ticket.");
             }
         });
 

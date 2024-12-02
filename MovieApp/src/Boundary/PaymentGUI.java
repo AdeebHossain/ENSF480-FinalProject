@@ -1,15 +1,20 @@
 package Boundary;
 
+import Controller.SeatingController;
+import Controller.TicketController;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 public class PaymentGUI {
 
     private boolean isRegisteredUser = false; // Set this based on check if user is logged in
+    private List<String[]> selectedSeats; // List to hold selected seats
 
-    public PaymentGUI(String movie, int numTickets, double ticketPrice) {
+    // Constructor accepting movie name, number of tickets, and ticket price
+    public PaymentGUI(String movie, int numTickets, double ticketPrice, List<String[]> selectedSeats) {
         // Constants
         double taxRate = 0.05; // 5% tax
 
@@ -17,6 +22,8 @@ public class PaymentGUI {
         double subtotal = numTickets * ticketPrice;
         double tax = subtotal * taxRate;
         double totalAmount = subtotal + tax;
+
+        this.selectedSeats = selectedSeats;
 
         // Main JFrame setup
         JFrame frame = new JFrame("Payment");
@@ -59,13 +66,26 @@ public class PaymentGUI {
         // Action listener for "Pay Now" button
         payButton.addActionListener(e -> {
             String email = emailField.getText();
-            int ticketNumber = 1234; // Dummy ticket number
+            TicketController ticketController = new TicketController();
+            SeatingController seatingController = new SeatingController();
+            int ticketNumber = generateTicketNumber(); // Replace with logic to generate ticket number
+            boolean seatsReserved = reserveSeats(seatingController);
 
-            // Show receipt popup
-            JOptionPane.showMessageDialog(frame,
-                    String.format("Receipt\n\nTicket Number: %d\nTotal: $%.2f\nReceipt emailed to: %s",
-                            ticketNumber, totalAmount, email),
-                    "Receipt", JOptionPane.INFORMATION_MESSAGE);
+            if (seatsReserved) {
+                // Add ticket to the database
+                int theatreId = 1; // Example, this should be dynamic based on the selected theatre
+                double ticketPrice = 12.50; // Example, this should be dynamic based on the ticket price
+                String showtime = "7:00 PM"; // Example, this should be dynamic based on the selected showtime
+                ticketController.addTicket(email, ticketNumber, theatreId, ticketPrice, showtime);
+
+                // Show receipt popup
+                JOptionPane.showMessageDialog(frame,
+                        String.format("Receipt\n\nTicket Number: %d\nTotal: $%.2f\nReceipt emailed to: %s",
+                                ticketNumber, totalAmount, email),
+                        "Receipt", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(frame, "There was an error reserving the seats.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
 
             frame.dispose(); // Close the payment window
         });
@@ -103,7 +123,31 @@ public class PaymentGUI {
         return email.contains("@") && email.contains(".");
     }
 
+    // Method to reserve selected seats in the database
+    private boolean reserveSeats(SeatingController seatingController) {
+        boolean allReserved = true;
+        for (String[] seat : selectedSeats) {
+            String row = seat[0];
+            int col = Integer.parseInt(seat[1]);
+            if (!seatingController.reserveSeat(row, col)) {
+                allReserved = false;
+            }
+        }
+        return allReserved;
+    }
+
+    // Method to generate a ticket number (you can replace this with your actual logic)
+    private int generateTicketNumber() {
+        return (int) (Math.random() * 10000); // Example random ticket number
+    }
+
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new PaymentGUI("Example Movie", 2, 12.50));
+        // Example selected seats data
+        List<String[]> selectedSeats = List.of(
+                new String[]{"A", "1"},
+                new String[]{"B", "2"}
+        );
+
+        SwingUtilities.invokeLater(() -> new PaymentGUI("Example Movie", 2, 12.50, selectedSeats));
     }
 }

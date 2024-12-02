@@ -1,5 +1,7 @@
 package Boundary;
 
+import Controller.SeatingController;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -12,6 +14,7 @@ public class ShowtimesPage {
     // Use a global map to store seat states across popup openings
     private static final Map<String, Boolean> seatStates = new HashMap<>();
     private static int numTickets = 0;
+    private static final SeatingController seatingController = new SeatingController();
 
     public static void show(String movieTitle, String[] showtimes, String movieDescription, String movieLength, ImageIcon movieImage) {
         JFrame frame = new JFrame("Showtimes - " + movieTitle);
@@ -132,6 +135,9 @@ public class ShowtimesPage {
 
         StringBuilder selectedSeats = new StringBuilder();
 
+        // Fetch the seat availability from the database
+        java.util.List<String[]> seatAvailability = seatingController.getSeatsAvailability();
+
         // Check the previously selected seats and update the selectedSeats label
         for (String seat : seatStates.keySet()) {
             if (seatStates.get(seat)) {
@@ -147,8 +153,22 @@ public class ShowtimesPage {
 
                 String seatLabel = rows[row] + columns[col];
 
-                // Check the seat state and set the button icon accordingly
-                JButton seatButton = new JButton(seatStates.getOrDefault(seatLabel, false) ? selectedIcon : availableIcon);
+                // Check the seat availability from the database
+                String seatStatus = "Available";
+                for (String[] seat : seatAvailability) {
+                    if (seat[0].equals(rows[row]) && seat[1].equals(columns[col])) {
+                        seatStatus = seat[2];
+                        break;
+                    }
+                }
+
+                // Set the seat button icon based on the availability
+                ImageIcon seatIcon = availableIcon;
+                if ("Reserved".equals(seatStatus)) {
+                    seatIcon = occupiedIcon;
+                }
+
+                JButton seatButton = new JButton(seatIcon);
                 seatButton.setPreferredSize(new Dimension(50, 35)); // Adjust seat size if needed
                 seatButton.setBorder(BorderFactory.createEmptyBorder());
                 seatButton.setContentAreaFilled(false);
