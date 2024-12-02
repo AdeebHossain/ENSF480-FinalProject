@@ -13,7 +13,7 @@ public class ShowtimesPage {
     private static final Map<String, Boolean> seatStates = new HashMap<>();
     private static int numTickets = 0;
 
-    public static void show(String movieTitle, String[] showtimes, String movieDescription, ImageIcon movieImage) {
+    public static void show(String movieTitle, String[] showtimes, String movieDescription, String movieLength, ImageIcon movieImage) {
         JFrame frame = new JFrame("Showtimes - " + movieTitle);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(800, 600);
@@ -30,13 +30,14 @@ public class ShowtimesPage {
         imageLabel.setVerticalAlignment(JLabel.CENTER);
         imageLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
 
-        JTextArea descriptionArea = new JTextArea(movieDescription);
+        // Combine description and length
+        JTextArea descriptionArea = new JTextArea(movieDescription + "\n\nLength: " + movieLength + " minutes");
         descriptionArea.setLineWrap(true);
         descriptionArea.setWrapStyleWord(true);
         descriptionArea.setEditable(false);
         descriptionArea.setFont(new Font("Arial", Font.PLAIN, 16));
         descriptionArea.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        descriptionArea.setPreferredSize(new Dimension(500, 300)); // Increase the description area size
+        descriptionArea.setPreferredSize(new Dimension(500, 300));
 
         JScrollPane descriptionScrollPane = new JScrollPane(descriptionArea);
 
@@ -48,7 +49,7 @@ public class ShowtimesPage {
 
         JComboBox<String> showtimeDropdown = new JComboBox<>(showtimes);
         showtimeDropdown.setFont(new Font("Arial", Font.PLAIN, 14));
-        showtimeDropdown.setPreferredSize(new Dimension(150, 30));  // Reduce the size of the dropdown
+        showtimeDropdown.setPreferredSize(new Dimension(150, 30));
         JLabel dropdownLabel = new JLabel("Select a Showtime:", JLabel.CENTER);
         dropdownLabel.setFont(new Font("Arial", Font.BOLD, 16));
 
@@ -61,7 +62,7 @@ public class ShowtimesPage {
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
         JButton backButton = new JButton("Back to Movie Selection");
         JButton seatSelectionButton = new JButton("Proceed to Seat Selection");
-        seatSelectionButton.setEnabled(false); // Disable seat selection button initially
+        seatSelectionButton.setEnabled(false);
 
         JButton checkoutButton = new JButton("Proceed to Checkout");
         checkoutButton.addActionListener(e -> {
@@ -69,7 +70,7 @@ public class ShowtimesPage {
                 JOptionPane.showMessageDialog(frame, "No tickets selected. Please select your seats first.", "Error", JOptionPane.ERROR_MESSAGE);
             } else {
                 frame.dispose();
-                SwingUtilities.invokeLater(() -> new PaymentGUI(movieTitle, numTickets, 12.50)); // Example ticket price
+                SwingUtilities.invokeLater(() -> new PaymentGUI(movieTitle, numTickets, 12.50));
             }
         });
 
@@ -92,13 +93,9 @@ public class ShowtimesPage {
 
         seatSelectionButton.addActionListener(e -> openSeatSelectionFrame(frame));
 
-        // Add listener to enable seat selection only when a showtime is selected
-        showtimeDropdown.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (showtimeDropdown.getSelectedIndex() != -1) {
-                    seatSelectionButton.setEnabled(true); // Enable the button when a showtime is selected
-                }
+        showtimeDropdown.addActionListener(e -> {
+            if (showtimeDropdown.getSelectedIndex() != -1) {
+                seatSelectionButton.setEnabled(true);
             }
         });
     }

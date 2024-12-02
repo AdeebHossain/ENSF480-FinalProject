@@ -2,9 +2,9 @@ package Boundary;
 
 import javax.swing.*;
 import java.awt.*;
-// import java.util.ArrayList;
 import java.util.List;
 import Controller.MovieController;
+import Controller.ShowtimeController;
 
 public class FrontPage {
 
@@ -38,38 +38,49 @@ public class FrontPage {
 
             // Fetch movie data from the database
             MovieController movieController = new MovieController();
+            ShowtimeController showtimeController = new ShowtimeController(); // Pass the connection if needed
+
             List<String[]> movies = movieController.getAllMovies(); // Assuming this method returns a list of [name, description]
 
             int movieIndex = 0;
             for (String[] movie : movies) {
                 final String movieName = movie[0];
                 final String movieDescription = movie[1];
-            
+                final String movieLength = movie[2];
+
                 // Placeholder for movie poster images
                 final ImageIcon movieIcon;
                 Image movieImage = new ImageIcon("../data/movie" + (movieIndex + 1) + ".jpg").getImage()
-                    .getScaledInstance(150, 200, Image.SCALE_SMOOTH);
+                        .getScaledInstance(150, 200, Image.SCALE_SMOOTH);
                 movieIcon = new ImageIcon(movieImage);
-            
-                final String[] showtimes = {"10:00 AM", "1:00 PM", "6:00 PM"}; // Replace with real showtimes if available
-            
+
+                // Fetch showtimes for the movie
+                final String[] showtimes;
+                try {
+                    showtimes = showtimeController.getShowtimeInfo(movieIndex + 1); // Assume movieIndex matches movie_id
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    continue;
+                }
+
                 JButton movieButton = new JButton(movieIcon);
                 movieButton.setPreferredSize(new Dimension(150, 200));
                 movieButton.setFocusPainted(false);
-            
+
                 movieButton.addActionListener(e -> {
                     frame.dispose();
                     ShowtimesPage.show(
-                        movieName,
-                        showtimes,
-                        movieDescription,
-                        movieIcon // Replace with real image paths
+                            movieName,
+                            showtimes,
+                            movieDescription,
+                            movieLength, // Include movie length in the description
+                            movieIcon
                     );
                 });
-            
+
                 moviePanel.add(movieButton);
                 movieIndex++;
-            }            
+            }
 
             panel.add(moviePanel, BorderLayout.CENTER);
 
