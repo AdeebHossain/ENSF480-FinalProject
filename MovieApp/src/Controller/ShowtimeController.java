@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ShowtimeController {
-    private  MySQLConnection connection;
+    private MySQLConnection connection;
 
     // Constructor to initialize the database connection
     public ShowtimeController() {

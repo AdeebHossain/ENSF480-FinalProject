@@ -47,7 +47,6 @@ public class ShowtimesPage {
 
         JScrollPane descriptionScrollPane = new JScrollPane(descriptionArea);
 
-
         topPanel.add(imageLabel);
         topPanel.add(descriptionScrollPane);
 
@@ -59,7 +58,6 @@ public class ShowtimesPage {
         showtimeDropdown.setPreferredSize(new Dimension(150, 30));
         JLabel dropdownLabel = new JLabel("Select a Showtime:", JLabel.CENTER);
         dropdownLabel.setFont(new Font("Arial", Font.BOLD, 16));
-
 
         JPanel dropdownPanel = new JPanel();
         dropdownPanel.setLayout(new BoxLayout(dropdownPanel, BoxLayout.Y_AXIS));
