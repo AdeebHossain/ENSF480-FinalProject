@@ -40,7 +40,7 @@ public class MovieController {
     }
 
     public List<String[]> getAllMovies() {
-        String query = "SELECT name, summary FROM movies";
+        String query = "SELECT name, summary, length FROM movies";
         ResultSet results = connection.query(query);
         List<String[]> movies = new ArrayList<>();
 
@@ -48,7 +48,9 @@ public class MovieController {
             while (results.next()) {
                 String name = results.getString("name");
                 String summary = results.getString("summary");
-                movies.add(new String[]{name, summary});
+                int length = results.getInt("length");
+                String lengthStr = String.valueOf(length);
+                movies.add(new String[]{name, summary, lengthStr});
             }
         } catch (SQLException e) {
             e.printStackTrace();
