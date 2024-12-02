@@ -18,7 +18,7 @@ public class LoginController {
 
         try {
             if (result.next()) {
-                return result.getInt("registered"); // Return the user's role
+                return result.getInt("registered"); // Return registered status
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -40,4 +40,20 @@ public class LoginController {
         return false; // Fee is not due or no such user
     }
 
+    // Method to calculate credit based on registration status
+    public double calculateCredit(String email) {
+        String query = "SELECT registered FROM users WHERE email = ?";
+        ResultSet result = connection.query(query, email);
+
+        try {
+            if (result.next()) {
+                int isRegistered = result.getInt("registered");
+                return isRegistered == 1 ? 1.0 : 0.85; // 100% credit if registered, else 85%
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return 0.0; // Return 0 if user is not found or error occurs
+    }
 }

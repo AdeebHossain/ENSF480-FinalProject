@@ -2,6 +2,7 @@ package Boundary;
 
 import Controller.TicketController;
 import Controller.SeatingController;
+import Controller.LoginController;
 
 import javax.swing.*;
 import java.awt.*;
@@ -145,6 +146,10 @@ public class BookingCancellation {
         confirmButton.addActionListener(e -> {
             String email = emailField.getText().trim();
             if (!email.isEmpty() && !ticketIds.isEmpty()) {
+                // Instantiate LoginController to calculate credit
+                LoginController loginController = new LoginController();
+                double creditPercentage = loginController.calculateCredit(email) * 100; // Get credit percentage
+
                 for (String ticketIdStr : ticketIds) {
                     try {
                         int ticketId = Integer.parseInt(ticketIdStr);
@@ -163,11 +168,9 @@ public class BookingCancellation {
                     }
                 }
 
-                // Simulate email validation and refund logic
-                boolean isRegistered = true; // Replace with actual check
-                String refundAmount = isRegistered ? "100%" : "85%";
+                // Show refund confirmation with calculated credit
                 JOptionPane.showMessageDialog(frame,
-                        String.format("Cancellation confirmed.\nRefund: %s credit sent to %s.", refundAmount, email),
+                        String.format("Cancellation confirmed.\nRefund: %.0f%% credit sent to %s.", creditPercentage, email),
                         "Cancellation Success", JOptionPane.INFORMATION_MESSAGE);
                 frame.dispose(); // Close window
             } else {
