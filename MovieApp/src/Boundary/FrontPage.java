@@ -53,7 +53,8 @@ public class FrontPage {
                 int movieId = movieController.getMovieIdByName(movieName);
 
                 // Retrieve showtimes using the ShowtimeController
-                final String[] showtimes = showtimeController.getShowtimeInfo(movieId);
+                // final String[] showtimes = showtimeController.getShowtimeInfo(movieId);
+                final String[] showtimes = {"10:00 AM", "1:00 PM", "6:00 PM"}; 
 
                 // Placeholder for movie poster images
                 final ImageIcon movieIcon;
